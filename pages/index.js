@@ -12,7 +12,7 @@ export default function IndexPage() {
           rel="stylesheet"
         />
       </Head>
-      <div class="flex">
+      <div className="flex">
         <Sidebar />
         <StockLayout />
       </div>
