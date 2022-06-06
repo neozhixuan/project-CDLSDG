@@ -1,6 +1,6 @@
 export const StockCard = (props) => {
   return (
-    <li className="border-gray-400 flex flex-row mb-2">
+    <li className="border-gray-400 flex-row mb-2">
       <div className="select-none cursor-pointer bg-white rounded-md flex flex-1 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
         <div className="flex-1 pl-1 mr-16">
           <div className="font-medium">{props.companyName}</div>
@@ -16,6 +16,9 @@ export const StockCard = (props) => {
               {props.stockName}
             </a>{" "}
           </div>
+        </div>
+        <div className="basis-1/5 text-center">
+          64
         </div>
         <div className="text-red-500 ">{props.stockChange}</div>
       </div>
