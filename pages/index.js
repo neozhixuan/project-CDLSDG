@@ -15,9 +15,9 @@ export default function IndexPage() {
       </Head>
       <div className="flex">
         <Sidebar />
-        <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 md:grid-rows-1">
-          <StockLayout className="h-full col-span-4 md:col-span-8 row-span-1"/>
-          <StockScore className="col-span-4 md:col-span-4 h-full p-10 row-span-1"/>
+        <div className="flex w-full lg:flex-row flex-col">
+          <StockLayout className="lg:basis-3/4"/>
+          <StockScore className="lg:basis-1/4 w-full"/>
         </div>
       </div>
     </main>
