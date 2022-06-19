@@ -6,7 +6,7 @@ export const StockLayout = (props) => {
   return (
     <div className={classes}>
       <header className="flex-none flex h-16 bg-gray-100 border-t px-4 items-center">
-        <h1 className="font-semibold text-lg">Market Status</h1>
+        <h1 className="font-semibold text-lg">Market Status for <span className="text-red-800">{props.name}</span></h1>
       </header>
       <header className="flex-none flex  bg-gray-100 px-4 items-center">
         <StockLabel labelName="Upside" />
@@ -30,6 +30,9 @@ export const StockLayout = (props) => {
           stockChange={"↑ 5.45%"}
         />
       </ul>
+      <button onClick={props.setPage}>
+        Back
+      </button>
     </div>
   );
 };
