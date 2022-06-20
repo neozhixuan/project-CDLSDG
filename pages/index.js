@@ -4,16 +4,44 @@ import { Sidebar } from "../components/Sidebar";
 import { StockLayout } from "../components/StockLayout";
 import { StockScore } from "../components/StockScore";
 import { useState } from "react";
-
+import { Container } from "../components/Container";
+import { Select } from "../components/Select";
 export default function IndexPage() {
   const [page, willSetPage] = useState(0);
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
+  const [items, setItems] = useState([1]);
+  const [stocks, setStocks] = useState([]);
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    willSetPage(1);
-    setName(event.target.elements[0].value);
-  }
+    for (let i = 1; i < event.target.elements.length - 1; i += 2) {
+      const value = event.target.elements[i].value;
+      if (value) {
+        console.log(value);
+        stocks.push(value);
+      }
+    }
+    console.log(stocks.length)
+    if (stocks.length > 2) {
+      setName(event.target.elements[0].value);
+      setStocks([...stocks]);
+      willSetPage(1);
+    }
+  };
+
+  const addSelect = () => {
+    if (items.length < 6) {
+      items.push(items[items.length - 1] + 1);
+      setItems([...items]);
+    }
+  };
+
+  const willRemoveItem = () => {
+    if (items.length > 1) {
+      items.pop();
+      setItems([...items]);
+    }
+  };
 
   return (
     <main>
@@ -26,19 +54,50 @@ export default function IndexPage() {
       <div className="flex">
         <Sidebar />
         {page === 0 && (
-          <div>
-            <form onSubmit={onSubmitHandler}>
-              <label htmlFor="name">Name</label>
-              <input id="name"/>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
+          <Container>
+            <form onSubmit={onSubmitHandler} className="flex flex-col">
+              <p className="mb-2 flex flex-col content-center">
+                {" "}
+                <label htmlFor="name">(1) Name</label>
+                <input id="name" className="border border-gray-300" />
+              </p>
+              <div className="mb-2 flex flex-col content-center">
+                <div className="flex flex-row">
+                  <label htmlFor="countries">(2) Stock</label>{" "}
+                  <input
+                    type="button"
+                    className="w-10 border border-gray-300"
+                    value="-"
+                    onClick={willRemoveItem}
+                  />
+                </div>
+
+                {items.map((data, idx) => (
+                  <Select
+                    key={idx}
+                    number={data}
+                    willAddItem={() => addSelect()}
+                  />
+                ))}
+              </div>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center"
+                type="submit"
+              >
                 Submit
               </button>
             </form>
-          </div>
+          </Container>
         )}
         {page === 1 && (
           <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 md:grid-rows-1">
-            <StockLayout className="h-full col-span-4 md:col-span-8 row-span-1" setPage={()=>willSetPage(0)} name={name}/>
+            <StockLayout
+              className="h-full col-span-4 md:col-span-8 row-span-1"
+              setPage={() => willSetPage(0)}
+              setItems={() => setItems([1])}
+              stockNames={stocks}
+              name={name}
+            />
             <StockScore className="col-span-4 md:col-span-4 h-full p-10 row-span-1" />
           </div>
         )}

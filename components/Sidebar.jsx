@@ -1,6 +1,6 @@
 export const Sidebar = (props) => {
   return (
-    <aside className="w-64" aria-label="Sidebar">
+    <aside className="w-64 h-auto" aria-label="Sidebar">
       <div className="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 h-screen">
         <ul className="space-y-2">
           <li>
@@ -20,7 +20,7 @@ export const Sidebar = (props) => {
               <span className="ml-3">Dashboard</span>
             </a>
           </li>
-          <li>
+          {/* <li>
             <a
               href="#"
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -58,8 +58,8 @@ export const Sidebar = (props) => {
                 3
               </span>
             </a>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <a
               href="#"
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -118,7 +118,7 @@ export const Sidebar = (props) => {
               </svg>
               <span className="flex-1 ml-3 whitespace-nowrap">Sign In</span>
             </a>
-          </li>
+          </li> */}
           <li>
             <a
               href="#"
