@@ -43,6 +43,10 @@ export default function IndexPage() {
     }
   };
 
+  const resetPage = () => {
+    setItems([1])
+  }
+
   return (
     <main>
       <Head>
@@ -93,8 +97,7 @@ export default function IndexPage() {
           <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 md:grid-rows-1">
             <StockLayout
               className="h-full col-span-4 md:col-span-8 row-span-1"
-              setPage={() => willSetPage(0)}
-              setItems={() => setItems([1])}
+              setPage={()=>resetPage}
               stockNames={stocks}
               name={name}
             />

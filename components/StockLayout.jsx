@@ -2,10 +2,6 @@ import { StockCard } from "./StockCard";
 import { StockLabel } from "./StockLabel";
 
 export const StockLayout = (props) => {
-  const onClickHandler = () => {
-    props.setPage();
-    props.setItems;
-  };
 
   const classes = "bg-gray-100 " + props.className;
 
@@ -31,7 +27,7 @@ export const StockLayout = (props) => {
           />;
         })}
       </ul>
-      <button onClick={onClickHandler}>Back</button>
+      <button onClick={props.setPage}>Back</button>
     </div>
   );
 };
