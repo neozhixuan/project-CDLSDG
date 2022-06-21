@@ -14,18 +14,18 @@ export default function IndexPage() {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    for (let i = 1; i < event.target.elements.length - 1; i += 2) {
-      const value = event.target.elements[i].value;
-      if (value) {
-        console.log(value);
+    for (let i = 2; i < event.target.elements.length - 1; i += 2) {
+      const value = event.target[i].value;
+      if (value !== "Choose a stock") {
         stocks.push(value);
       }
     }
-    console.log(stocks.length)
-    if (stocks.length > 2) {
+    if (stocks.length != 0 && stocks[0].length < 13) {
       setName(event.target.elements[0].value);
       setStocks([...stocks]);
       willSetPage(1);
+    } else {
+      setStocks([]);
     }
   };
 
@@ -44,8 +44,10 @@ export default function IndexPage() {
   };
 
   const resetPage = () => {
-    setItems([1])
-  }
+    setItems([1]);
+    setStocks([]);
+    willSetPage(0);
+  };
 
   return (
     <main>
@@ -97,11 +99,19 @@ export default function IndexPage() {
           <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 md:grid-rows-1">
             <StockLayout
               className="h-full col-span-4 md:col-span-8 row-span-1"
-              setPage={()=>resetPage}
+              setPage={resetPage}
               stockNames={stocks}
               name={name}
             />
-            <StockScore className="col-span-4 md:col-span-4 h-full p-10 row-span-1" />
+            <StockScore
+              setPage={() => willSetPage(2)}
+              className="col-span-4 md:col-span-4 h-full p-10 row-span-1"
+            />
+          </div>
+        )}
+        {page === 2 && (
+          <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 md:grid-rows-1">
+             P3
           </div>
         )}
       </div>
