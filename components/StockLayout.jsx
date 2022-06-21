@@ -32,7 +32,7 @@ export const StockLayout = (props) => {
             stockChange={"↑ 3.45%"}
           />
         ))}
-        <button className="w-20 bg-blue-500 text-white" onClick={test}>
+        <button className="w-20 bg-blue-500 text-white" onClick={props.setPage}>
           Back
         </button>
       </ul>
