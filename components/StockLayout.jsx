@@ -1,11 +1,12 @@
 import { StockCard } from "./StockCard";
 import { StockLabel } from "./StockLabel";
 
+
 export const StockLayout = (props) => {
   const classes = "bg-gray-100 " + props.className;
 
   const test = () => {
-    console.log(props.stockNames);
+    console.log(props.data.stocks[0]);
   };
   return (
     <div className={classes}>
@@ -31,7 +32,7 @@ export const StockLayout = (props) => {
             stockChange={"↑ 3.45%"}
           />
         ))}
-        <button className="w-20 bg-blue-500 text-white" onClick={props.setPage}>
+        <button className="w-20 bg-blue-500 text-white" onClick={test}>
           Back
         </button>
       </ul>

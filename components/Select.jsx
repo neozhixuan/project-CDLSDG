@@ -7,9 +7,12 @@ export const Select = (props) => {
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
       >
         <option defaultValue>Choose a stock</option>
-        <option value="APPL">APPL</option>
+        {props.data.stocks.map((data,idx) => (
+          <option key={idx} value={`${data.Code}`}>{data.Code}</option>
+        ))}
+        {/* <option value="APPL">APPL</option>
         <option value="TSLA">TSLA</option>
-        <option value="AMZN">AMZN</option>
+        <option value="AMZN">AMZN</option> */}
       </select>
       <input
         type="button"

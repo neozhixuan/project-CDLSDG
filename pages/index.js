@@ -6,7 +6,9 @@ import { StockScore } from "../components/StockScore";
 import { useState } from "react";
 import { Container } from "../components/Container";
 import { Select } from "../components/Select";
-export default function IndexPage() {
+import ESGscores from "../jsonfiles/ESGscores.json"
+
+export default function IndexPage( {datapoint} ) {
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
   const [items, setItems] = useState([1]);
@@ -80,6 +82,7 @@ export default function IndexPage() {
 
                 {items.map((data, idx) => (
                   <Select
+                    data={datapoint}
                     key={idx}
                     number={data}
                     willAddItem={() => addSelect()}
@@ -102,6 +105,7 @@ export default function IndexPage() {
               setPage={resetPage}
               stockNames={stocks}
               name={name}
+              data={datapoint}
             />
             <StockScore
               setPage={() => willSetPage(2)}
@@ -117,4 +121,16 @@ export default function IndexPage() {
       </div>
     </main>
   );
+}
+
+export async function getStaticProps() {
+	const stocks = await ESGscores;
+
+	return {
+		props: {
+			datapoint: {
+          stocks: stocks,
+			},
+		},
+	};
 }
