@@ -18,7 +18,7 @@ export const StockCard = (props) => {
           </div>
         </div>
         <div className="basis-1/5 text-center">
-          64
+          {props.last}
         </div>
         <div className="text-red-500 ">{props.stockChange}</div>
       </div>

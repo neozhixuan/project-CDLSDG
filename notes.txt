@@ -1,0 +1,3 @@
+    console.log(props.stockNames[0]);
+    console.log(props.data.stocks[0].Code);
+    console.log(props.stockNames[0] === props.data.stocks[0].Code);
