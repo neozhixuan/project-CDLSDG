@@ -4,7 +4,7 @@ export const StockScore = (props) => {
     <div className={classes}>
       <div className="flex flex-col bg-white lg:mt-20 p-10">
         <p className="pt-5 text-center"> Your Average ESG Score </p>
-        <p className="text-center"> 64 </p>
+        <p className="text-center"> {props.score} </p>
         <div className="mx-auto">
             <div className="bg-green-100 text-center p-2">
                 Normal

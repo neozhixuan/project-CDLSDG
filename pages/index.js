@@ -2,17 +2,52 @@ import Link from "next/link";
 import Head from "next/head";
 import { Sidebar } from "../components/Sidebar";
 import { StockLayout } from "../components/StockLayout";
+import { StockEvaluator } from "../components/StockEvaluator";
 import { StockScore } from "../components/StockScore";
 import { useState } from "react";
 import { Container } from "../components/Container";
 import { Select } from "../components/Select";
-import ESGscores from "../jsonfiles/ESGscores.json"
+import ESGscores from "../jsonfiles/ESGscores.json";
 
-export default function IndexPage( {datapoint} ) {
+export default function IndexPage({ datapoint }) {
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
   const [items, setItems] = useState([1]);
   const [stocks, setStocks] = useState([]);
+  const [score, setScore] = useState(0);
+
+  const [allItems, setAllItems] = useState([]);
+
+  var gatherStats = () => {
+    // Hold average ESG score
+    let count = 0;
+    let total = 0;
+    let average = 0;
+    // Prevents stocks from piling up when code changes in local
+    if (allItems.length !== stocks.length) {
+      // "allItems" will be the state that holds all the stocks and info
+      for (let i = 0; i < stocks.length; i++) {
+        for (let j = 0; j < datapoint.stocks.length; j++) {
+          if (stocks[i] === datapoint.stocks[j].Code) {
+            allItems.push(datapoint.stocks[j]);
+            setAllItems([...allItems]);
+            console.log(allItems);
+
+            total = total + datapoint.stocks[j].ESG;
+            console.log("total is " + total);
+            count++;
+            if (count === stocks.length) {
+              average = total / count;
+              setScore(average);
+              console.log("Average score is " + score);
+            }
+          }
+        }
+      }
+    } else {
+      console.log("Close");
+    }
+  };
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -29,6 +64,7 @@ export default function IndexPage( {datapoint} ) {
     } else {
       setStocks([]);
     }
+    gatherStats();
   };
 
   const addSelect = () => {
@@ -49,6 +85,8 @@ export default function IndexPage( {datapoint} ) {
     setItems([1]);
     setStocks([]);
     willSetPage(0);
+    setAllItems([]);
+    setScore(0);
   };
 
   return (
@@ -103,20 +141,19 @@ export default function IndexPage( {datapoint} ) {
             <StockLayout
               className="h-full col-span-4 md:col-span-8 row-span-1"
               setPage={resetPage}
-              stockNames={stocks}
               name={name}
-              data={datapoint}
+              allItems={allItems}
+              score={score}
             />
             <StockScore
               setPage={() => willSetPage(2)}
               className="col-span-4 md:col-span-4 h-full p-10 row-span-1"
+              score={score}
             />
           </div>
         )}
         {page === 2 && (
-          <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 md:grid-rows-1">
-             P3
-          </div>
+          <StockEvaluator setPage={() => willSetPage(1)} score={score} allItems={allItems}/>
         )}
       </div>
     </main>
@@ -124,13 +161,13 @@ export default function IndexPage( {datapoint} ) {
 }
 
 export async function getStaticProps() {
-	const stocks = await ESGscores;
+  const stocks = await ESGscores;
 
-	return {
-		props: {
-			datapoint: {
-          stocks: stocks,
-			},
-		},
-	};
+  return {
+    props: {
+      datapoint: {
+        stocks: stocks,
+      },
+    },
+  };
 }

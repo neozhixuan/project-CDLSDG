@@ -2,7 +2,7 @@ export const StockCard = (props) => {
   return (
     <li className="border-gray-400 flex-row mb-2">
       <div className="select-none cursor-pointer bg-white rounded-md flex flex-1 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
-        <div className="flex-1 pl-1 mr-16">
+        <div className="basis-1/5 pl-1">
           <div className="font-medium">{props.companyName}</div>
           <div className="text-gray-600 text-sm">
             {" "}
@@ -17,8 +17,11 @@ export const StockCard = (props) => {
             </a>{" "}
           </div>
         </div>
-        <div className="basis-2/5 text-center">
+        <div className="basis-1/5 text-center">
           {props.name}
+        </div>
+        <div className="basis-1/5 text-center">
+          {props.esg}
         </div>
         <div className="basis-1/5 text-center">
           {props.last}
@@ -26,7 +29,7 @@ export const StockCard = (props) => {
         <div className="basis-1/5 text-center">
           {props.stockChange}
         </div>
-        <div className="text-red-500 ">{props.stockChangePercent}</div>
+        <div className="basis-1/5 text-center text-red-500">{props.stockChangePercent}</div>
       </div>
     </li>
   );
