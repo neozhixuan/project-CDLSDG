@@ -56,6 +56,8 @@ export const StockLayout = (props) => {
             stockName={data.Exch}
             stockChange={data.Change}
             last={data.Last}
+            name={data.Stock_Name}
+            stockChangePercent={data.ChangePerc}
           />
         ))}
         <button className="w-20 bg-blue-500 text-white" onClick={props.setPage}>

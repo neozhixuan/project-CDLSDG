@@ -17,10 +17,16 @@ export const StockCard = (props) => {
             </a>{" "}
           </div>
         </div>
+        <div className="basis-2/5 text-center">
+          {props.name}
+        </div>
         <div className="basis-1/5 text-center">
           {props.last}
         </div>
-        <div className="text-red-500 ">{props.stockChange}</div>
+        <div className="basis-1/5 text-center">
+          {props.stockChange}
+        </div>
+        <div className="text-red-500 ">{props.stockChangePercent}</div>
       </div>
     </li>
   );
