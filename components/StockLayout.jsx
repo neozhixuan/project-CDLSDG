@@ -2,11 +2,11 @@ import { StockCard } from "./StockCard";
 import { StockBanner } from "./StockBanner";
 
 export const StockLayout = (props) => {
-  const classes = "bg-gray-100 " + props.className;
+  const classes = "bg-gray-100 px-5 " + props.className;
 
   return (
     <div className={classes}>
-      <header className="flex-none flex h-16 bg-gray-100 border-t px-4 items-center">
+      <header className="flex-none flex h-16 bg-gray-100 items-center">
         <h1 className="font-semibold text-lg">
           {props.name ? (
             <span className="text-red-800">Market Status for {props.name}</span>
@@ -19,7 +19,7 @@ export const StockLayout = (props) => {
         <StockLabel labelName="Upside" />
         <StockLabel labelName="Downside" />
       </header> */}
-      <ul className="flex flex-col bg-gray-100 p-4">
+      <ul className="flex flex-col bg-gray-100">
         <StockBanner />
         {props.allItems.map((data, idx) => (
           <StockCard

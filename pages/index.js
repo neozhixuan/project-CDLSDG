@@ -15,6 +15,9 @@ export default function IndexPage({ datapoint }) {
   const [items, setItems] = useState([1]);
   const [stocks, setStocks] = useState([]);
   const [score, setScore] = useState(0);
+  const [e, setE] = useState(0);
+  const [s, setS] = useState(0);
+  const [g, setG] = useState(0);
 
   const [allItems, setAllItems] = useState([]);
 
@@ -22,6 +25,9 @@ export default function IndexPage({ datapoint }) {
     // Hold average ESG score
     let count = 0;
     let total = 0;
+    let totalE = 0;
+    let totalS = 0;
+    let totalG = 0;
     let average = 0;
     // Prevents stocks from piling up when code changes in local
     if (allItems.length !== stocks.length) {
@@ -33,13 +39,19 @@ export default function IndexPage({ datapoint }) {
             setAllItems([...allItems]);
             console.log(allItems);
 
-            total = total + datapoint.stocks[j].ESG;
+            total += datapoint.stocks[j].ESG;
+            totalE += datapoint.stocks[j].E;
+            totalS += datapoint.stocks[j].S;
+            totalG += datapoint.stocks[j].G;
             console.log("total is " + total);
             count++;
             if (count === stocks.length) {
               average = total / count;
               setScore(average);
               console.log("Average score is " + score);
+              setE(totalE/count);
+              setS(totalS/count);
+              setG(totalG/count);
             }
           }
         }
@@ -157,6 +169,9 @@ export default function IndexPage({ datapoint }) {
             setPage={() => willSetPage(1)}
             score={score}
             allItems={allItems}
+            env={e}
+            soc={s}
+            gov={g}
           />
         )}
       </div>

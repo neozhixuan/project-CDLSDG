@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-export const Accordion = ({ title, content }) => {
+export const Accordion = (props) => {
   const [active, setActive] = useState(false)
   const [height, setHeight] = useState('0px')
   const [rotate, setRotate] = useState('transform duration-700 ease')
@@ -15,19 +15,20 @@ export const Accordion = ({ title, content }) => {
   }
 
   return (
-    <div className="flex flex-col bg-white mt-5 pl-5 w-full">
+    <div className="flex flex-col bg-white mt-2 pl-5 w-full">
       <button
-        className="py-6 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between"
+        className="flex flex-row justify-between py-6 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between"
         onClick={toggleAccordion}
       >
-        <p className="inline-block text-footnote light">{"Environment"}</p>
+        <p className="inline-block text-footnote light">{props.header}</p>
+        <span className='pr-4'>&darr;</span>
       </button>
       <div
         ref={contentSpace}
         style={{ maxHeight: `${height}` }}
         className="overflow-auto transition-max-height duration-700 ease-in-out"
       >
-        <div className="pb-10">{"b"}</div>
+        <div className="pb-10">{props.content}</div>
       </div>
     </div>
   )

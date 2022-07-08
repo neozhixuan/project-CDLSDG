@@ -29,7 +29,7 @@ export const StockAnalysisCard = (props) => {
           <div className="basis-1/5 text-center">
             {props.stockChange}
           </div>
-          <div className="basis-1/5 text-center text-red-500">{props.stockChangePercent}</div>
+          <div className={`basis-1/5 text-center`}>{(props.stockChangePercent)}</div>
         </div>
         <div className="select-none cursor-pointer bg-white rounded-md flex flex-1 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
           <div className="basis-2/5 pl-1">
