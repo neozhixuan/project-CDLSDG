@@ -153,16 +153,29 @@ export default function IndexPage({ datapoint }) {
           </div>
         )}
         {page === 2 && (
-          <StockEvaluator setPage={() => willSetPage(1)} score={score} allItems={allItems}/>
+          <StockEvaluator
+            setPage={() => willSetPage(1)}
+            score={score}
+            allItems={allItems}
+          />
         )}
       </div>
     </main>
   );
 }
+function compareStrings(a, b) {
+  // Assuming you want case-insensitive comparison
+  a = a.toLowerCase();
+  b = b.toLowerCase();
+
+  return a < b ? -1 : a > b ? 1 : 0;
+}
 
 export async function getStaticProps() {
   const stocks = await ESGscores;
-
+  stocks.sort(function(a, b) {
+    return compareStrings(a.Stock_Name, b.Stock_Name);
+  })
   return {
     props: {
       datapoint: {

@@ -8,7 +8,7 @@ export const Select = (props) => {
       >
         <option defaultValue>Choose a stock</option>
         {props.data.stocks.map((data,idx) => (
-          <option key={idx} value={`${data.Code}`}>{data.Code}</option>
+          <option key={idx} value={`${data.Code}`}>{data.Stock_Name}</option>
         ))}
         {/* <option value="APPL">APPL</option>
         <option value="TSLA">TSLA</option>

@@ -1,15 +1,9 @@
 import { StockCard } from "./StockCard";
-import { StockLabel } from "./StockLabel";
 import { StockBanner } from "./StockBanner";
-import { useEffect, useState } from "react";
-import ESGscores from "../jsonfiles/ESGscores.json";
 
 export const StockLayout = (props) => {
   const classes = "bg-gray-100 " + props.className;
 
-  const test = () => {
-    console.log(props.data.stocks[0]);
-  };
   return (
     <div className={classes}>
       <header className="flex-none flex h-16 bg-gray-100 border-t px-4 items-center">
