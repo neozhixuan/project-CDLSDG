@@ -9,9 +9,9 @@ export const StockLayout = (props) => {
       <header className="flex-none flex h-16 bg-gray-100 items-center">
         <h1 className="font-semibold text-lg">
           {props.name ? (
-            <span className="text-red-800">Market Status for {props.name}</span>
+            <span>Market Status for {props.name}</span>
           ) : (
-            <span>Market Status for Anon</span>
+            <span>Market Status for Guest</span>
           )}
         </h1>
       </header>

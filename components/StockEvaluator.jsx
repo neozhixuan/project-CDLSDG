@@ -21,9 +21,9 @@ export const StockEvaluator = (props) => {
   const classes = "p-5 w-full flex-col bg-gray-100 " + props.className;
   return (
     <div className={classes}>
-      <div className="text-2xl font-bold py-2">Overview</div>
+
       {/* Part 1 */}
-      <div className="font-semibold mt-5">Your Current Statistics</div>
+      <div className="font-semibold mt-20">Your Current Statistics</div>
       <Card
         className="mx-auto text-center "
         a={"A breakdown of your average sustainability scores"}

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Container } from "../components/Container";
 import { Select } from "../components/Select";
 import ESGscores from "../jsonfiles/ESGscores.json";
+import { Numbering } from "../components/Numbering";
 
 export default function IndexPage({ datapoint }) {
   const [page, willSetPage] = useState(0);
@@ -49,9 +50,9 @@ export default function IndexPage({ datapoint }) {
               average = total / count;
               setScore(average);
               console.log("Average score is " + score);
-              setE(totalE/count);
-              setS(totalS/count);
-              setG(totalG/count);
+              setE(totalE / count);
+              setS(totalS / count);
+              setG(totalG / count);
             }
           }
         }
@@ -110,7 +111,7 @@ export default function IndexPage({ datapoint }) {
         />
       </Head>
       <div className="flex">
-        <Sidebar />
+        <Sidebar page={page}/>
         {page === 0 && (
           <Container>
             <form onSubmit={onSubmitHandler} className="flex flex-col">
@@ -165,14 +166,17 @@ export default function IndexPage({ datapoint }) {
           </div>
         )}
         {page === 2 && (
-          <StockEvaluator
-            setPage={() => willSetPage(1)}
-            score={score}
-            allItems={allItems}
-            env={e}
-            soc={s}
-            gov={g}
-          />
+          <>
+            <Numbering />
+            <StockEvaluator
+              setPage={() => willSetPage(1)}
+              score={score}
+              allItems={allItems}
+              env={e}
+              soc={s}
+              gov={g}
+            />
+          </>
         )}
       </div>
     </main>
@@ -188,9 +192,9 @@ function compareStrings(a, b) {
 
 export async function getStaticProps() {
   const stocks = await ESGscores;
-  stocks.sort(function(a, b) {
+  stocks.sort(function (a, b) {
     return compareStrings(a.Stock_Name, b.Stock_Name);
-  })
+  });
   return {
     props: {
       datapoint: {

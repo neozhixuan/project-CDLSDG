@@ -18,7 +18,7 @@ export const StockCard = (props) => {
           </div>
         </div>
         <div className="basis-1/5 text-center">{props.name}</div>
-        <div className="basis-1/5 text-center">{props.last}</div>
+        <div className="basis-1/5 text-center">${props.last}</div>
         <div className="basis-1/5 text-center">{props.stockChange}</div>
         <div className={`basis-1/5 text-center ${props.stockChangePercent.includes("+") ? "text-green-500" : "text-red-500"} `}>
           {props.stockChangePercent}

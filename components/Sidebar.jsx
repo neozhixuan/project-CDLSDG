@@ -1,7 +1,9 @@
 export const Sidebar = (props) => {
   return (
-    <aside className="w-64 h-auto" aria-label="Sidebar">
-      <div className="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 h-screen">
+    <div className={`flex dark:bg-gray-800 ${props.page === 2 ? "" : "h-screen" }`} aria-label="Sidebar">
+      <div
+        className={`overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 `}
+      >
         <ul className="space-y-2">
           <li>
             <a
@@ -141,6 +143,6 @@ export const Sidebar = (props) => {
           </li>
         </ul>
       </div>
-    </aside>
+    </div>
   );
 };
