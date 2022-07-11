@@ -147,9 +147,9 @@ export default function IndexPage({ datapoint }) {
           rel="stylesheet"
         />
       </Head>
-      <div className={`flex w-full bg-gray-100 ${isTabletMode ? "" : "p-4"}`}>
-        {isTabletMode && <Sidebar page={page} />}
-        
+      <div className={`flex w-full p-4 sm:p-0 ${!isTabletMode && "bg-gray-100 "}`}>
+        <Sidebar page={page} />
+
         {page === 0 && (
           <Container>
             <form onSubmit={onSubmitHandler} className="flex flex-col">

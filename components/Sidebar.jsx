@@ -1,6 +1,6 @@
 export const Sidebar = (props) => {
   return (
-    <div className={`flex dark:bg-gray-800 ${props.page === 2 ? "" : "h-screen" }`} aria-label="Sidebar">
+    <div className={`sm:block hidden flex dark:bg-gray-800 ${props.page === 2 ? "" : "h-screen" }`} aria-label="Sidebar">
       <div
         className={`overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 `}
       >
