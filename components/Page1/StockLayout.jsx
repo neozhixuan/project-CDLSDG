@@ -15,10 +15,7 @@ export const StockLayout = (props) => {
           )}
         </h1>
       </header>
-      {/* <header className="flex-none flex  bg-gray-100 px-4 items-center">
-        <StockLabel labelName="Upside" />
-        <StockLabel labelName="Downside" />
-      </header> */}
+
       <ul className="flex flex-col bg-gray-100">
         <StockBanner />
         {props.allItems.map((data, idx) => (

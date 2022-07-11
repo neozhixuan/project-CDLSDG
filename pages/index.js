@@ -1,26 +1,37 @@
 import Link from "next/link";
 import Head from "next/head";
 import { Sidebar } from "../components/Sidebar";
-import { StockLayout } from "../components/StockLayout";
-import { StockEvaluator } from "../components/StockEvaluator";
+import { StockLayout } from "../components/Page1/StockLayout";
+import { StockEvaluator } from "../components/Page2/StockEvaluator";
 import { StockScore } from "../components/StockScore";
 import { useState } from "react";
 import { Container } from "../components/Container";
 import { Select } from "../components/Select";
 import ESGscores from "../jsonfiles/ESGscores.json";
-import { Numbering } from "../components/Numbering";
+import { Numbering } from "../components/Page2/Numbering";
+import { useMediaQuery } from "react-responsive";
 
 export default function IndexPage({ datapoint }) {
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
+
   const [items, setItems] = useState([1]);
   const [stocks, setStocks] = useState([]);
+  const [allItems, setAllItems] = useState([]);
+  const [sectors, setSectors] = useState({});
+
   const [score, setScore] = useState(0);
   const [e, setE] = useState(0);
   const [s, setS] = useState(0);
   const [g, setG] = useState(0);
 
-  const [allItems, setAllItems] = useState([]);
+  const isDesktopMode = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
+
+  const isTabletMode = useMediaQuery({
+    query: "(min-width: 768px)",
+  });
 
   var gatherStats = () => {
     // Hold average ESG score
@@ -37,8 +48,13 @@ export default function IndexPage({ datapoint }) {
         for (let j = 0; j < datapoint.stocks.length; j++) {
           if (stocks[i] === datapoint.stocks[j].Code) {
             allItems.push(datapoint.stocks[j]);
-            setAllItems([...allItems]);
-            console.log(allItems);
+
+            // Hash Table to compute the companies
+            if (sectors[datapoint.stocks[j].Sector] !== undefined) {
+              sectors[datapoint.stocks[j].Sector] += 1;
+            } else {
+              sectors[datapoint.stocks[j].Sector] = 1;
+            }
 
             total += datapoint.stocks[j].ESG;
             totalE += datapoint.stocks[j].E;
@@ -57,6 +73,17 @@ export default function IndexPage({ datapoint }) {
           }
         }
       }
+      setAllItems(allItems);
+      console.log(allItems);
+
+      for (const sector in sectors) {
+        sectors[sector] = (sectors[sector] / allItems.length) * 100;
+      }
+
+      const sortedSectors = Object.fromEntries(
+        Object.entries(sectors).sort(([, a], [, b]) => b - a)
+      );
+      setSectors(sortedSectors);
     } else {
       console.log("Close");
     }
@@ -80,6 +107,15 @@ export default function IndexPage({ datapoint }) {
     gatherStats();
   };
 
+  const jasonStart = () => {
+    stocks.push("MSFT", "AAPL", "TSLA", "AMZN");
+    setStocks([...stocks]);
+    console.log(stocks.length);
+    console.log(allItems.length);
+    willSetPage(1);
+    gatherStats();
+  };
+
   const addSelect = () => {
     if (items.length < 6) {
       items.push(items[items.length - 1] + 1);
@@ -100,6 +136,7 @@ export default function IndexPage({ datapoint }) {
     willSetPage(0);
     setAllItems([]);
     setScore(0);
+    setSectors([]);
   };
 
   return (
@@ -110,8 +147,9 @@ export default function IndexPage({ datapoint }) {
           rel="stylesheet"
         />
       </Head>
-      <div className="flex">
-        <Sidebar page={page}/>
+      <div className={`flex w-full bg-gray-100 ${isTabletMode ? "" : "p-4"}`}>
+        {isTabletMode && <Sidebar page={page} />}
+        
         {page === 0 && (
           <Container>
             <form onSubmit={onSubmitHandler} className="flex flex-col">
@@ -147,6 +185,39 @@ export default function IndexPage({ datapoint }) {
                 Submit
               </button>
             </form>
+            <p className="mt-10 font-semibold">
+              Alternatively, use a demo portfolio:
+            </p>
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+            >
+              <option defaultValue>TESLA INC</option>
+            </select>
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+            >
+              <option defaultValue>MICROSOFT INC</option>
+            </select>
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+            >
+              <option defaultValue>APPLE INC</option>
+            </select>
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+            >
+              <option defaultValue>AMAZON.COM INC</option>
+            </select>
+            <button
+              onClick={jasonStart}
+              className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center"
+            >
+              Log in as Jason
+            </button>
           </Container>
         )}
         {page === 1 && (
@@ -167,7 +238,8 @@ export default function IndexPage({ datapoint }) {
         )}
         {page === 2 && (
           <>
-            <Numbering />
+            {isDesktopMode && <Numbering />}
+
             <StockEvaluator
               setPage={() => willSetPage(1)}
               score={score}
@@ -175,6 +247,7 @@ export default function IndexPage({ datapoint }) {
               env={e}
               soc={s}
               gov={g}
+              sectors={sectors}
             />
           </>
         )}

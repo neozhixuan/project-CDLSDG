@@ -1,4 +1,5 @@
 import { Card } from "./Card";
+import { SectorCard } from "./SectorCard";
 import { StockAnalysisCard } from "./StockAnalysisCard";
 import { Accordion } from "./Accordion";
 import { useState } from "react";
@@ -21,7 +22,6 @@ export const StockEvaluator = (props) => {
   const classes = "p-5 w-full flex-col bg-gray-100 " + props.className;
   return (
     <div className={classes}>
-
       {/* Part 1 */}
       <div className="font-semibold mt-20">Your Current Statistics</div>
       <Card
@@ -52,16 +52,22 @@ export const StockEvaluator = (props) => {
             )}
           </div>
         ))}
+        {/* Navigator for the items */}
         {props.allItems.length > 1 && (
           <div className="flex flex-row justify-between bg-white px-4 py-1 mt-1">
-            <button onClick={prevStock} className="font-semibold">Prev</button>
+            <button onClick={prevStock} className="font-semibold">
+              Prev
+            </button>
             <span>
               {index + 1}/{props.allItems.length}
             </span>
-            <button onClick={nextStock} className="font-semibold">Next</button>
+            <button onClick={nextStock} className="font-semibold">
+              Next
+            </button>
           </div>
         )}
       </ul>
+
       {/* Part 2 */}
       <div className="font-semibold mt-10">
         Understanding the benefits of ESG
@@ -89,17 +95,17 @@ export const StockEvaluator = (props) => {
         <Accordion header={"Social"} content={"boop"} />
         <Accordion header={"Governmental"} content={"boop"} />
       </div>
+
       {/* Part 3 */}
       <div className="font-semibold mt-10">Investing to Improve Your Score</div>
-      <Card
+      <SectorCard
+        sectors={props.sectors}
         className="mx-auto mt-3 "
         a={"A Breakdown of Your Portfolio’s Holdings"}
-        d={"XX"}
-        e={"XX"}
-        f={"XX"}
       />
       <ul className="flex flex-col bg-gray-100 mt-4">
         <StockAnalysisCard
+          suggestion={true}
           companyName={"MSFT"}
           stockName={"NASDAQ"}
           stockChange={"View report"}
