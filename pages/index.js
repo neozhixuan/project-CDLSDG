@@ -117,7 +117,7 @@ export default function IndexPage({ datapoint, options }) {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    if(select.length !== 0){
+    if (select.length !== 0) {
       setName(event.target.elements[0].value);
       willSetPage(1);
     }
@@ -203,6 +203,7 @@ export default function IndexPage({ datapoint, options }) {
                   <p className="flex flex-row space-x-2">
                     <span>{data}</span>
                     <Select
+                      key={idx}
                       filterOption={createFilter({ ignoreAccents: false })}
                       components={{ MenuList }}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
