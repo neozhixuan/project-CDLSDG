@@ -200,10 +200,9 @@ export default function IndexPage({ datapoint, options }) {
                 </div>
 
                 {items.map((data, idx) => (
-                  <p className="flex flex-row space-x-2">
+                  <p className="flex flex-row space-x-2" key={idx}>
                     <span>{data}</span>
                     <Select
-                      key={idx}
                       filterOption={createFilter({ ignoreAccents: false })}
                       components={{ MenuList }}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
