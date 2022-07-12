@@ -1,17 +1,39 @@
+import React, { Component } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { Sidebar } from "../components/Sidebar";
 import { StockLayout } from "../components/Page1/StockLayout";
 import { StockEvaluator } from "../components/Page2/StockEvaluator";
 import { StockScore } from "../components/StockScore";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Container } from "../components/Container";
-import { Select } from "../components/Select";
 import { Numbering } from "../components/Page2/Numbering";
 import { useMediaQuery } from "react-responsive";
 import { connectToDatabase } from "../util/mongodb";
+import Select from "react-select";
+import { createFilter } from "react-select";
+import { FixedSizeList as List } from "react-window";
+const height = 35;
 
-export default function IndexPage({ datapoint }) {
+class MenuList extends Component {
+  render() {
+    const { options, children, maxHeight, getValue } = this.props;
+    const [value] = getValue();
+    const initialOffset = options.indexOf(value) * height;
+
+    return (
+      <List
+        height={maxHeight}
+        itemCount={children.length}
+        itemSize={height}
+        initialScrollOffset={initialOffset}
+      >
+        {({ index, style }) => <div style={style}>{children[index]}</div>}
+      </List>
+    );
+  }
+}
+export default function IndexPage({ datapoint, options }) {
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
 
@@ -19,6 +41,8 @@ export default function IndexPage({ datapoint }) {
   const [stocks, setStocks] = useState([]);
   const [allItems, setAllItems] = useState([]);
   const [sectors, setSectors] = useState({});
+
+  const [select, setSelect] = useState([]);
 
   const [score, setScore] = useState(0);
   const [e, setE] = useState(0);
@@ -42,11 +66,11 @@ export default function IndexPage({ datapoint }) {
     let totalG = 0;
     let average = 0;
     // Prevents stocks from piling up when code changes in local
-    if (allItems.length !== stocks.length) {
+    if (allItems.length !== select.length) {
       // "allItems" will be the state that holds all the stocks and info
-      for (let i = 0; i < stocks.length; i++) {
+      for (let i = 0; i < select.length; i++) {
         for (let j = 0; j < datapoint.length; j++) {
-          if (stocks[i] === datapoint[j].Code) {
+          if (select[i] === datapoint[j].Code) {
             allItems.push(datapoint[j]);
 
             // Hash Table to compute the companies
@@ -62,7 +86,7 @@ export default function IndexPage({ datapoint }) {
             totalG += datapoint[j].G;
             console.log("total is " + total);
             count++;
-            if (count === stocks.length) {
+            if (count === select.length) {
               average = total / count;
               setScore(average);
               console.log("Average score is " + score);
@@ -89,20 +113,13 @@ export default function IndexPage({ datapoint }) {
     }
   };
 
+  const inputE1 = useRef(null);
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    for (let i = 2; i < event.target.elements.length - 1; i += 2) {
-      const value = event.target[i].value;
-      if (value !== "Choose a stock") {
-        stocks.push(value);
-      }
-    }
-    if (stocks.length != 0 && stocks[0].length < 13) {
+    if(select.length !== 0){
       setName(event.target.elements[0].value);
-      setStocks([...stocks]);
       willSetPage(1);
-    } else {
-      setStocks([]);
     }
     gatherStats();
   };
@@ -139,6 +156,17 @@ export default function IndexPage({ datapoint }) {
     setSectors([]);
   };
 
+  const handleTypeSelect = (e) => {
+    let array = [];
+    for (let i = 0; i < e.length; i++) {
+      array.push(e[i].value);
+    }
+    select = array;
+    setSelect(select);
+    console.log(select);
+    array = [];
+  };
+
   return (
     <main>
       <Head>
@@ -172,12 +200,24 @@ export default function IndexPage({ datapoint }) {
                 </div>
 
                 {items.map((data, idx) => (
-                  <Select
-                    data={datapoint}
-                    key={idx}
-                    number={data}
-                    willAddItem={() => addSelect()}
-                  />
+                  <p className="flex flex-row space-x-2">
+                    <span>{data}</span>
+                    <Select
+                      filterOption={createFilter({ ignoreAccents: false })}
+                      components={{ MenuList }}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+                      options={options}
+                      isMulti
+                      ref={inputE1}
+                      onChange={handleTypeSelect}
+                    />
+                    <input
+                      type="button"
+                      className="w-10 border border-gray-300"
+                      value="+"
+                      onClick={addSelect}
+                    />
+                  </p>
                 ))}
               </div>
               <button
@@ -272,7 +312,13 @@ export async function getServerSideProps(context) {
 
   const properties = JSON.parse(JSON.stringify(data));
 
+  const options = properties.map((property) => {
+    return {
+      value: property.Code,
+      label: property.Stock_Name,
+    };
+  });
   return {
-    props: { datapoint: properties },
+    props: { datapoint: properties, options: options },
   };
 }
