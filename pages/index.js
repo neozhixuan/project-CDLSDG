@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Link from "next/link";
 import Head from "next/head";
 import { Sidebar } from "../components/Sidebar";
 import { StockLayout } from "../components/Page1/StockLayout";
@@ -13,6 +12,7 @@ import { connectToDatabase } from "../util/mongodb";
 import Select from "react-select";
 import { createFilter } from "react-select";
 import { FixedSizeList as List } from "react-window";
+
 const height = 35;
 
 class MenuList extends Component {
@@ -38,7 +38,7 @@ export default function IndexPage({ datapoint, options }) {
   const [name, setName] = useState("");
 
   const [items, setItems] = useState([1]);
-  const [stocks, setStocks] = useState([]);
+  // const [stocks, setStocks] = useState([]);
   const [allItems, setAllItems] = useState([]);
   const [sectors, setSectors] = useState({});
 
@@ -65,8 +65,8 @@ export default function IndexPage({ datapoint, options }) {
     let totalS = 0;
     let totalG = 0;
     let average = 0;
-    // Prevents stocks from piling up when code changes in local
-    if (allItems.length !== select.length) {
+    // // Prevents stocks from piling up when code changes in local
+    // if (allItems.length !== select.length) {
       // "allItems" will be the state that holds all the stocks and info
       for (let i = 0; i < select.length; i++) {
         for (let j = 0; j < datapoint.length; j++) {
@@ -108,12 +108,10 @@ export default function IndexPage({ datapoint, options }) {
         Object.entries(sectors).sort(([, a], [, b]) => b - a)
       );
       setSectors(sortedSectors);
-    } else {
-      console.log("Close");
-    }
+    // } else {
+    //   console.log("Close");
+    // }
   };
-
-  const inputE1 = useRef(null);
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -125,31 +123,29 @@ export default function IndexPage({ datapoint, options }) {
   };
 
   const jasonStart = () => {
-    stocks.push("MSFT", "AAPL", "TSLA", "AMZN");
-    setStocks([...stocks]);
-    console.log(stocks.length);
-    console.log(allItems.length);
+    select.push("MSFT", "AAPL", "TSLA", "AMZN");
+    setSelect([...select]);
     willSetPage(1);
     gatherStats();
   };
 
-  const addSelect = () => {
-    if (items.length < 6) {
-      items.push(items[items.length - 1] + 1);
-      setItems([...items]);
-    }
-  };
+  // const addSelect = () => {
+  //   if (items.length < 6) {
+  //     items.push(items[items.length - 1] + 1);
+  //     setItems([...items]);
+  //   }
+  // };
 
-  const willRemoveItem = () => {
-    if (items.length > 1) {
-      items.pop();
-      setItems([...items]);
-    }
-  };
+  // const willRemoveItem = () => {
+  //   if (items.length > 1) {
+  //     items.pop();
+  //     setItems([...items]);
+  //   }
+  // };
 
   const resetPage = () => {
     setItems([1]);
-    setStocks([]);
+    setSelect([]);
     willSetPage(0);
     setAllItems([]);
     setScore(0);
@@ -182,41 +178,43 @@ export default function IndexPage({ datapoint, options }) {
 
         {page === 0 && (
           <Container>
+            <p className="font-semibold mb-2">
+              List the stocks existing in your portfolio:
+            </p>
             <form onSubmit={onSubmitHandler} className="flex flex-col">
-              <p className="mb-2 flex flex-col content-center">
+              <p className="mb-2 flex flex-row content-center ">
                 {" "}
-                <label htmlFor="name">(1) Name</label>
-                <input id="name" className="border border-gray-300" />
+                <label htmlFor="name" className="mr-2">Name: </label>
+                <input id="name" className=" w-full border border-gray-300" />
               </p>
-              <div className="mb-2 flex flex-col content-center">
+              <div className="mb-2 flex flex-row">
                 <div className="flex flex-row">
-                  <label htmlFor="countries">(2) Stock</label>{" "}
-                  <input
+                  <label htmlFor="countries" className="mr-2 flex self-center">Stocks: </label>{" "}
+                  {/* <input
                     type="button"
                     className="w-10 border border-gray-300"
                     value="-"
                     onClick={willRemoveItem}
-                  />
+                  /> */}
                 </div>
 
                 {items.map((data, idx) => (
-                  <p className="flex flex-row space-x-2" key={idx}>
-                    <span>{data}</span>
+                  <p className="flex flex-row space-x-2 w-full" key={idx}>
+                    {/* <span>{data}</span> */}
                     <Select
                       filterOption={createFilter({ ignoreAccents: false })}
                       components={{ MenuList }}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
                       options={options}
                       isMulti
-                      ref={inputE1}
                       onChange={handleTypeSelect}
                     />
-                    <input
+                    {/* <input
                       type="button"
                       className="w-10 border border-gray-300"
                       value="+"
                       onClick={addSelect}
-                    />
+                    /> */}
                   </p>
                 ))}
               </div>
@@ -227,30 +225,30 @@ export default function IndexPage({ datapoint, options }) {
                 Submit
               </button>
             </form>
-            <p className="mt-10 font-semibold">
+            <p className=" mb-2 mt-20 font-semibold">
               Alternatively, use a demo portfolio:
             </p>
             <select
               id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+              className="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
             >
               <option defaultValue>TESLA INC</option>
             </select>
             <select
               id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+              className="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
             >
               <option defaultValue>MICROSOFT INC</option>
             </select>
             <select
               id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+              className="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
             >
               <option defaultValue>APPLE INC</option>
             </select>
             <select
               id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+              className="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
             >
               <option defaultValue>AMAZON.COM INC</option>
             </select>
@@ -310,7 +308,10 @@ export async function getServerSideProps(context) {
 
   const data = await db.collection("data").find({}).toArray();
 
-  const properties = JSON.parse(JSON.stringify(data));
+  const property = JSON.parse(JSON.stringify(data));
+  const properties = property.sort(function(a,b){
+    return compareStrings(a.Stock_Name, b.Stock_Name)
+  })
 
   const options = properties.map((property) => {
     return {
