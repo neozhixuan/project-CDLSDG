@@ -12,6 +12,7 @@ import { connectToDatabase } from "../util/mongodb";
 import Select from "react-select";
 import { createFilter } from "react-select";
 import { FixedSizeList as List } from "react-window";
+import Image from "next/image";
 
 const height = 35;
 
@@ -67,47 +68,47 @@ export default function IndexPage({ datapoint, options }) {
     let average = 0;
     // // Prevents stocks from piling up when code changes in local
     // if (allItems.length !== select.length) {
-      // "allItems" will be the state that holds all the stocks and info
-      for (let i = 0; i < select.length; i++) {
-        for (let j = 0; j < datapoint.length; j++) {
-          if (select[i] === datapoint[j].Code) {
-            allItems.push(datapoint[j]);
+    // "allItems" will be the state that holds all the stocks and info
+    for (let i = 0; i < select.length; i++) {
+      for (let j = 0; j < datapoint.length; j++) {
+        if (select[i] === datapoint[j].Code) {
+          allItems.push(datapoint[j]);
 
-            // Hash Table to compute the companies
-            if (sectors[datapoint[j].Sector] !== undefined) {
-              sectors[datapoint[j].Sector] += 1;
-            } else {
-              sectors[datapoint[j].Sector] = 1;
-            }
+          // Hash Table to compute the companies
+          if (sectors[datapoint[j].Sector] !== undefined) {
+            sectors[datapoint[j].Sector] += 1;
+          } else {
+            sectors[datapoint[j].Sector] = 1;
+          }
 
-            total += datapoint[j].ESG;
-            totalE += datapoint[j].E;
-            totalS += datapoint[j].S;
-            totalG += datapoint[j].G;
-            console.log("total is " + total);
-            count++;
-            if (count === select.length) {
-              average = total / count;
-              setScore(average);
-              console.log("Average score is " + score);
-              setE(totalE / count);
-              setS(totalS / count);
-              setG(totalG / count);
-            }
+          total += datapoint[j].ESG;
+          totalE += datapoint[j].E;
+          totalS += datapoint[j].S;
+          totalG += datapoint[j].G;
+          console.log("total is " + total);
+          count++;
+          if (count === select.length) {
+            average = total / count;
+            setScore(average);
+            console.log("Average score is " + score);
+            setE(totalE / count);
+            setS(totalS / count);
+            setG(totalG / count);
           }
         }
       }
-      setAllItems(allItems);
-      console.log(allItems);
+    }
+    setAllItems(allItems);
+    console.log(allItems);
 
-      for (const sector in sectors) {
-        sectors[sector] = (sectors[sector] / allItems.length) * 100;
-      }
+    for (const sector in sectors) {
+      sectors[sector] = (sectors[sector] / allItems.length) * 100;
+    }
 
-      const sortedSectors = Object.fromEntries(
-        Object.entries(sectors).sort(([, a], [, b]) => b - a)
-      );
-      setSectors(sortedSectors);
+    const sortedSectors = Object.fromEntries(
+      Object.entries(sectors).sort(([, a], [, b]) => b - a)
+    );
+    setSectors(sortedSectors);
     // } else {
     //   console.log("Close");
     // }
@@ -171,25 +172,32 @@ export default function IndexPage({ datapoint, options }) {
           rel="stylesheet"
         />
       </Head>
-      <div
-        className={`flex w-full p-4 sm:p-0 ${!isTabletMode && "bg-gray-100 "}`}
-      >
+      <div className={`flex w-full p-4 sm:p-0 `}>
         <Sidebar page={page} />
 
         {page === 0 && (
           <Container>
-            <p className="font-semibold mb-2">
+            <div className="mb-12 ">
+              <Image className="" width={300} height={75} src="/cgscimb.png" />
+              <Image className="" width={280} height={75} src="/esg-dash.png" />
+            </div>
+
+            <p className="font-semibold mb-2 text-lg">
               List the stocks existing in your portfolio:
             </p>
             <form onSubmit={onSubmitHandler} className="flex flex-col">
               <p className="mb-2 flex flex-row content-center ">
                 {" "}
-                <label htmlFor="name" className="mr-2">Name: </label>
+                <label htmlFor="name" className="mr-2">
+                  Name:{" "}
+                </label>
                 <input id="name" className=" w-full border border-gray-300" />
               </p>
               <div className="mb-2 flex flex-row">
                 <div className="flex flex-row">
-                  <label htmlFor="countries" className="mr-2 flex self-center">Stocks: </label>{" "}
+                  <label htmlFor="countries" className="mr-2 flex self-center">
+                    Stocks:{" "}
+                  </label>{" "}
                   {/* <input
                     type="button"
                     className="w-10 border border-gray-300"
@@ -225,7 +233,7 @@ export default function IndexPage({ datapoint, options }) {
                 Submit
               </button>
             </form>
-            <p className=" mb-2 mt-20 font-semibold">
+            <p className=" mb-2 mt-20 font-semibold text-lg">
               Alternatively, use a demo portfolio:
             </p>
             <select
@@ -309,9 +317,9 @@ export async function getServerSideProps(context) {
   const data = await db.collection("data").find({}).toArray();
 
   const property = JSON.parse(JSON.stringify(data));
-  const properties = property.sort(function(a,b){
-    return compareStrings(a.Stock_Name, b.Stock_Name)
-  })
+  const properties = property.sort(function (a, b) {
+    return compareStrings(a.Stock_Name, b.Stock_Name);
+  });
 
   const options = properties.map((property) => {
     return {

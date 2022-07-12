@@ -1,6 +1,6 @@
 export const Container = (props) => {
     return(
-        <div className={`mx-auto mt-20 ${props.className}`}>
+        <div className={`mt-10 mx-auto ${props.className}`}>
             {props.children}
         </div>
     )
