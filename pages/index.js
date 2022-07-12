@@ -7,9 +7,9 @@ import { StockScore } from "../components/StockScore";
 import { useState } from "react";
 import { Container } from "../components/Container";
 import { Select } from "../components/Select";
-import ESGscores from "../jsonfiles/ESGscores.json";
 import { Numbering } from "../components/Page2/Numbering";
 import { useMediaQuery } from "react-responsive";
+import { connectToDatabase } from "../util/mongodb";
 
 export default function IndexPage({ datapoint }) {
   const [page, willSetPage] = useState(0);
@@ -45,21 +45,21 @@ export default function IndexPage({ datapoint }) {
     if (allItems.length !== stocks.length) {
       // "allItems" will be the state that holds all the stocks and info
       for (let i = 0; i < stocks.length; i++) {
-        for (let j = 0; j < datapoint.stocks.length; j++) {
-          if (stocks[i] === datapoint.stocks[j].Code) {
-            allItems.push(datapoint.stocks[j]);
+        for (let j = 0; j < datapoint.length; j++) {
+          if (stocks[i] === datapoint[j].Code) {
+            allItems.push(datapoint[j]);
 
             // Hash Table to compute the companies
-            if (sectors[datapoint.stocks[j].Sector] !== undefined) {
-              sectors[datapoint.stocks[j].Sector] += 1;
+            if (sectors[datapoint[j].Sector] !== undefined) {
+              sectors[datapoint[j].Sector] += 1;
             } else {
-              sectors[datapoint.stocks[j].Sector] = 1;
+              sectors[datapoint[j].Sector] = 1;
             }
 
-            total += datapoint.stocks[j].ESG;
-            totalE += datapoint.stocks[j].E;
-            totalS += datapoint.stocks[j].S;
-            totalG += datapoint.stocks[j].G;
+            total += datapoint[j].ESG;
+            totalE += datapoint[j].E;
+            totalS += datapoint[j].S;
+            totalG += datapoint[j].G;
             console.log("total is " + total);
             count++;
             if (count === stocks.length) {
@@ -147,7 +147,9 @@ export default function IndexPage({ datapoint }) {
           rel="stylesheet"
         />
       </Head>
-      <div className={`flex w-full p-4 sm:p-0 ${!isTabletMode && "bg-gray-100 "}`}>
+      <div
+        className={`flex w-full p-4 sm:p-0 ${!isTabletMode && "bg-gray-100 "}`}
+      >
         <Sidebar page={page} />
 
         {page === 0 && (
@@ -263,16 +265,14 @@ function compareStrings(a, b) {
   return a < b ? -1 : a > b ? 1 : 0;
 }
 
-export async function getStaticProps() {
-  const stocks = await ESGscores;
-  stocks.sort(function (a, b) {
-    return compareStrings(a.Stock_Name, b.Stock_Name);
-  });
+export async function getServerSideProps(context) {
+  const { db } = await connectToDatabase();
+
+  const data = await db.collection("data").find({}).toArray();
+
+  const properties = JSON.parse(JSON.stringify(data));
+
   return {
-    props: {
-      datapoint: {
-        stocks: stocks,
-      },
-    },
+    props: { datapoint: properties },
   };
 }

@@ -1,0 +1,39 @@
+import { StockCard } from "./StockCard";
+import { StockBanner } from "./StockBanner";
+
+export const StockLayout = (props) => {
+  const classes = "bg-gray-100 px-5 " + props.className;
+
+  return (
+    <div className={classes}>
+      <header className="flex-none flex h-16 bg-gray-100 items-center">
+        <h1 className="font-semibold text-lg">
+          {props.name ? (
+            <span>Market Status for {props.name}</span>
+          ) : (
+            <span>Market Status for Guest</span>
+          )}
+        </h1>
+      </header>
+
+      <ul className="flex flex-col bg-gray-100">
+        <StockBanner />
+        {props.allItems.map((data, idx) => (
+          <StockCard
+            key={idx}
+            companyName={data.Code}
+            stockName={data.Exch}
+            stockChange={data.Change}
+            last={data.Last}
+            name={data.Stock_Name}
+            stockChangePercent={data.ChangePerc}
+            esg={data.ESG}
+          />
+        ))}
+        <button className="w-20 bg-blue-500 text-white" onClick={props.setPage}>
+          Back
+        </button>
+      </ul>
+    </div>
+  );
+};
