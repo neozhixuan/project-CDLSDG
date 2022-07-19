@@ -5,7 +5,7 @@ import { ESGScore } from "./ESGScore";
 
 export const StockAnalysisCard = (props) => {
   return (
-    <li className=" border-gray-400 flex-row mb-2">
+    <li className="flex-row border-b-2 ">
       {props.suggestion ? (
         <div className="border-b-2 select-none cursor-pointer bg-white rounded-md  grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
           <NameBlock className="basis-1/5 text-center" {...props} />
@@ -22,7 +22,7 @@ export const StockAnalysisCard = (props) => {
           </div>
         </div>
       ) : (
-        <div className="border-b-2 select-none cursor-pointer bg-white rounded-md grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
+        <div className="border-b-2 bg-white grid grid-cols-3 gap-y-4 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4 hover:shadow">
           <NameBlock className="basis-1/5 text-center" {...props} />
           <CardStats name={"Name"} stat={props.name} />
           <CardStats name={"Last"} stat={"$" + props.last} />
@@ -35,10 +35,10 @@ export const StockAnalysisCard = (props) => {
         </div>
       )}
 
-      <div className="select-none cursor-pointer bg-white rounded-md grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
+      <div className="bg-white gap-y-4 grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4 hover:shadow">
         <div className="row-start-1 col-span-2 pl-1">
-          <div className="font-medium">
-            The company has been doing well recently
+          <div className="font-medium text-sm md:text-base text-center">
+            Company's sustainability scores:
           </div>
         </div>
         <Score className="row-start-1" name={"CDP Score"} score={"NIL"} />

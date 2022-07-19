@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Head from "next/head";
 import { Sidebar } from "../components/Sidebar";
 import { StockLayout } from "../components/Page1/StockLayout";
+import { BannerButton } from "../components/Page1/BannerButton";
 import { StockEvaluator } from "../components/Page2/StockEvaluator";
 import { StockScore } from "../components/StockScore";
 import { useState, useRef } from "react";
@@ -13,7 +14,52 @@ import Select from "react-select";
 import { createFilter } from "react-select";
 import { FixedSizeList as List } from "react-window";
 import Image from "next/image";
-
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+const chartData = {
+  labels: ["January", "February", "March", "April", "May", "June", "July"],
+  datasets: [
+    {
+      label: "My First dataset",
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderCapStyle: "butt",
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: "miter",
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [65, 59, 80, 81, 56, 55, 40],
+    },
+  ],
+};
 const height = 35;
 
 class MenuList extends Component {
@@ -172,7 +218,7 @@ export default function IndexPage({ datapoint, options }) {
           rel="stylesheet"
         />
       </Head>
-      <div className={`flex w-full p-4 sm:p-0 `}>
+      <div className={`flex w-full p-4 bg-gray-100 sm:p-0 `}>
         <Sidebar page={page} />
 
         {page === 0 && (
@@ -269,24 +315,48 @@ export default function IndexPage({ datapoint, options }) {
           </Container>
         )}
         {page === 1 && (
-          <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 md:grid-rows-1">
-            <StockLayout
-              className="h-full col-span-4 md:col-span-8 row-span-1"
-              setPage={resetPage}
-              name={name}
-              allItems={allItems}
-              score={score}
-            />
-            <StockScore
-              setPage={() => willSetPage(2)}
-              className="col-span-4 md:col-span-4 h-full p-10 row-span-1"
-              score={score}
-            />
+          <div className="flex flex-col w-full space-y-10  bg-gray-100">
+            <div className="bg-gray-100 w-full pl-4 pt-4">
+              <header className="h-80 w-auto pb-80 mr-2 mb-7 sm:mb-36 md:mb-16 md:pb-24 lg:pb-10">
+                <h1 className="font-semibold text-lg">
+                  {name ? (
+                    <span>Market Status for {name}</span>
+                  ) : (
+                    <span>Market Status for Guest</span>
+                  )}
+                </h1>
+                <div className="flex flex-col lg:flex-row lg:space-y-0 space-y-4 w-full mt-4 mb-3">
+                  <BannerButton text={'View a recap of your year of ESG with CGS-CIMB'} button={'View recap'}/>
+                  <BannerButton text={'Take a pledge towards improving your ESG score'} button={'View pledge'}/>
+                </div>
+                <Line
+                  data={chartData}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                  }}
+                />
+              </header>
+            </div>
+            <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-3 md:grid-rows-2">
+              <StockLayout
+                className="h-full col-span-4 md:col-span-8"
+                setPage={resetPage}
+                name={name}
+                allItems={allItems}
+                score={score}
+              />
+              <StockScore
+                setPage={() => willSetPage(2)}
+                className="col-span-4 md:col-span-4 h-full p-10 "
+                score={score}
+              />
+            </div>
           </div>
         )}
         {page === 2 && (
           <>
-            {isDesktopMode && <Numbering />}
+            {/* {isDesktopMode && <Numbering />} */}
 
             <StockEvaluator
               setPage={() => willSetPage(1)}
