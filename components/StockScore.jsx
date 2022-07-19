@@ -2,7 +2,7 @@ export const StockScore = (props) => {
   const classes = " bg-gray-100 " + props.className;
   return (
     <div className={classes}>
-      <div className="flex flex-col bg-white w-30 sm:w-auto mt-6 p-3  border-gray-400 rounded-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
+      <div className="flex flex-col bg-white w-30 sm:w-auto mt-6 p-3 border-gray-400 rounded-md transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
         <p className="pt-5 text-center text-gray-500"> Your Average ESG Score </p>
         <p className="text-center text-3xl font-bold py-2"> {Math.trunc(props.score)} </p>
         <div className="mx-auto">

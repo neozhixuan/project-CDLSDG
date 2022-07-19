@@ -15,12 +15,12 @@ export const Accordion = (props) => {
   }
 
   return (
-    <div className="flex flex-col bg-white mt-2 pl-5 w-full">
+    <div className="flex flex-col bg-white mt-1 pl-5 w-full">
       <button
-        className="flex flex-row justify-between py-6 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between"
+        className="flex flex-row justify-between py-4 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between"
         onClick={toggleAccordion}
       >
-        <p className="inline-block text-footnote light">{props.header}</p>
+        <p className="inline-block text-footnote light font-semibold text-lg">{props.header}</p>
         <span className='pr-4'>&darr;</span>
       </button>
       <div

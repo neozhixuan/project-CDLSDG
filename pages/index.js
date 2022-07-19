@@ -38,7 +38,7 @@ const chartData = {
   labels: ["January", "February", "March", "April", "May", "June", "July"],
   datasets: [
     {
-      label: "My First dataset",
+      label: "Portfolio Value",
       fill: false,
       lineTension: 0.1,
       backgroundColor: "rgba(75,192,192,0.4)",
@@ -170,10 +170,11 @@ export default function IndexPage({ datapoint, options }) {
   };
 
   const jasonStart = () => {
-    select.push("MSFT", "AAPL", "TSLA", "AMZN");
+    select.push("SSTK", "AAPL", "TSLA", "AMZN");
     setSelect([...select]);
     willSetPage(1);
     gatherStats();
+    setName("Jason")
   };
 
   // const addSelect = () => {
@@ -292,7 +293,7 @@ export default function IndexPage({ datapoint, options }) {
               id="countries"
               className="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
             >
-              <option defaultValue>MICROSOFT INC</option>
+              <option defaultValue>SHUTTERSTOCK INC</option>
             </select>
             <select
               id="countries"
@@ -320,9 +321,9 @@ export default function IndexPage({ datapoint, options }) {
               <header className="h-80 w-auto pb-80 mr-2 mb-7 sm:mb-36 md:mb-16 md:pb-24 lg:pb-10">
                 <h1 className="font-semibold text-lg">
                   {name ? (
-                    <span>Market Status for {name}</span>
+                    <span>Welcome back, {name}</span>
                   ) : (
-                    <span>Market Status for Guest</span>
+                    <span>Overview</span>
                   )}
                 </h1>
                 <div className="flex flex-col lg:flex-row lg:space-y-0 space-y-4 w-full mt-4 mb-3">
@@ -338,7 +339,7 @@ export default function IndexPage({ datapoint, options }) {
                 />
               </header>
             </div>
-            <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-3 md:grid-rows-2">
+            <div className="grid grid-cols-4 md:grid-cols-12 w-full grid-rows-2 sm:grid-rows-1 pb-10">
               <StockLayout
                 className="h-full col-span-4 md:col-span-8"
                 setPage={resetPage}
@@ -348,7 +349,7 @@ export default function IndexPage({ datapoint, options }) {
               />
               <StockScore
                 setPage={() => willSetPage(2)}
-                className="col-span-4 md:col-span-4 h-full p-10 "
+                className="h-80 col-span-4 md:col-span-4 p-10 "
                 score={score}
               />
             </div>

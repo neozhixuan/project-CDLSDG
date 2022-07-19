@@ -7,15 +7,15 @@ export const StockAnalysisCard = (props) => {
   return (
     <li className="flex-row border-b-2 ">
       {props.suggestion ? (
-        <div className="border-b-2 select-none cursor-pointer bg-white rounded-md  grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
+        <div className="border-b-2  bg-white grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4 hover:shadow">
           <NameBlock className="basis-1/5 text-center" {...props} />
           <ESGScore
-            className="basis-1/5 text-center flex flex-col items-center"
+            className="col-span-1 text-center flex flex-col items-center"
             {...props}
           />
           <CardStats name={"Last"} stat={"$" + props.last} />
-          <div className="basis-1/5"></div>
-          <div className="basis-2/5">
+          <div className="sm:block hidden col-span-1"></div>
+          <div className="col-span-3 sm:col-span-2">
           <button disabled
               className="mt-2 w-full bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded flex justify-center"
             >View CGS-CIMB&apos;s report</button>

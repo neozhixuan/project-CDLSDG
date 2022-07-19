@@ -5,7 +5,6 @@ import { Accordion } from "./Accordion";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-
 export const StockEvaluator = (props) => {
   const [index, setIndex] = useState(0);
 
@@ -15,7 +14,7 @@ export const StockEvaluator = (props) => {
     }
   };
   const isMobileMode = useMediaQuery({
-    query: "(min-width: 400px)",
+    query: "(min-width: 500px)",
   });
 
   const prevStock = () => {
@@ -33,11 +32,18 @@ export const StockEvaluator = (props) => {
         Overview
       </span>
       {/* Part 1 */}
-      <div className="sm:block hidden flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-1 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-1 rounded-full text-2xl lg:text-4xl col-span-1">
         1
       </div>
       <div className="col-span-12 sm:col-span-11">
-        <div className="font-semibold">{!isMobileMode ? "1. Your Current Statistics" : "Your Current Statistics"}</div>
+        <div className="font-bold text-xl">
+          {!isMobileMode ? (
+            <span className="bg-blue-200 px-2 rounded-xl mr-2 text-lg">1</span>
+          ) : (
+            ""
+          )}
+          Your Current Statistics
+        </div>
         <Card
           className="mx-auto text-center mt-2 "
           a={"A breakdown of your average sustainability scores"}
@@ -84,16 +90,21 @@ export const StockEvaluator = (props) => {
       </div>
 
       {/* Part 2 */}
-      <div className="sm:block hidden flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
         2
       </div>
       <div className="col-span-12 sm:col-span-11">
-        <div className="font-semibold mt-10">
-          Understanding the benefits of ESG
+        <div className="font-bold text-xl mt-10">
+          {!isMobileMode ? (
+            <span className="bg-blue-200 px-2 rounded-xl mr-2 text-lg">2</span>
+          ) : (
+            ""
+          )}
+          Understanding the Benefits of ESG
         </div>
         <div className="bg-gray-100 mt-2">
           <div className="justify-between bg-white rounded-md flex flex-1 items-center p-4">
-            <div className="basis-4/5">
+            <div className="basis-11/12 text-xs sm:text-sm md:text-base">
               Investing in a stock with high ESG ratings have their individual
               benefits. Studies have proven that companies with higher ESG
               ratings have a positive relation with the financial performance.
@@ -101,7 +112,7 @@ export const StockEvaluator = (props) => {
               their stock price and action. We will breakdown the individual
               factors here for your education.
             </div>
-            <div className="basis-1/5">
+            <div className="basis-1/12">
               <img src="/flower.png" />
             </div>
           </div>
@@ -127,11 +138,16 @@ export const StockEvaluator = (props) => {
       </div>
 
       {/* Part 3 */}
-      <div className="sm:block hidden flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
         3
       </div>
       <div className="col-span-12 sm:col-span-11">
-        <div className="font-semibold mt-10">
+        <div className="font-bold text-xl mt-10">
+          {!isMobileMode ? (
+            <span className="bg-blue-200 px-2 rounded-xl mr-2 text-lg">3</span>
+          ) : (
+            ""
+          )}
           Investing to Improve Your Score
         </div>
         <SectorCard
@@ -154,6 +170,20 @@ export const StockEvaluator = (props) => {
         </ul>
       </div>
       {/* Part 4 */}
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
+        4
+      </div>
+      <div className="col-span-12 sm:col-span-11">
+        <div className="font-bold text-xl mt-10">
+          {!isMobileMode ? (
+            <span className="bg-blue-200 px-2 rounded-xl mr-2 text-lg">4</span>
+          ) : (
+            ""
+          )}
+          ESG Leaderboard
+        </div>
+        <div className="col-span-12">WIP come back soon!</div>
+      </div>
       {/* <div className="font-semibold mt-5">Leaderboard</div>
       <div
         className={`p-5 flex-row w-full select-none cursor-pointer bg-white rounded-md flex flex-1 items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow bg-gray-100 w-full ${props.className}`}
@@ -165,7 +195,7 @@ export const StockEvaluator = (props) => {
         <div className="basis-1/2">Eiden wins</div>
       </div> */}
       <button
-        className="w-20 h-10 bg-blue-500 text-white mt-5"
+        className="w-20 h-10 bg-blue-500 text-white mt-5 mb-5"
         onClick={props.setPage}
       >
         Back

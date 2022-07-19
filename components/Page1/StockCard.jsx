@@ -5,7 +5,7 @@ export const StockCard = (props) => {
   return (
     <li className="border-gray-400 flex-row mb-2">
       <div className="select-none cursor-pointer bg-white rounded-md grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2  items-center p-4  transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow">
-        <NameBlock className="basis-1/5 text-left" {...props} />
+        <NameBlock className="basis-1/5 flex flex-col items-center " {...props} />
         <div className="basis-1/5 text-center">{props.name}</div>
         <div className="basis-1/5 text-center">${props.last}</div>
         <div className="basis-1/5 text-center">{props.stockChange}</div>
