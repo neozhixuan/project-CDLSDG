@@ -38,7 +38,7 @@ export const StockAnalysisCard = (props) => {
       <div className="bg-white gap-y-4 grid grid-cols-3 sm:grid-cols-6 sm:grid-rows-1 grid-rows-2 items-center p-4 hover:shadow">
         <div className="row-start-1 col-span-2 pl-1">
           <div className="font-medium text-sm md:text-base text-center">
-            Company's sustainability scores:
+            Companys sustainability scores:
           </div>
         </div>
         <Score className="row-start-1" name={"CDP Score"} score={"NIL"} />
