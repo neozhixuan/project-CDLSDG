@@ -218,6 +218,10 @@ export default function IndexPage({ datapoint, options }) {
           href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap"
           rel="stylesheet"
         />
+        <title>ESG DaSH</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+
       </Head>
       <div className={`flex w-full p-4 bg-gray-100 sm:p-0 `}>
         <Sidebar page={page} />

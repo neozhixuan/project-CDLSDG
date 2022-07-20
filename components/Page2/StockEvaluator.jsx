@@ -14,7 +14,7 @@ export const StockEvaluator = (props) => {
     }
   };
   const isMobileMode = useMediaQuery({
-    query: "(min-width: 500px)",
+    query: "(min-width: 640px)",
   });
 
   const prevStock = () => {
