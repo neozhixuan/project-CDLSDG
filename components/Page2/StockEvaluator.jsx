@@ -2,7 +2,7 @@ import { Card } from "./Card";
 import { SectorCard } from "./SectorCard";
 import { StockAnalysisCard } from "./StockAnalysisCard";
 import { Accordion } from "./Accordion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export const StockEvaluator = (props) => {
@@ -182,7 +182,17 @@ export const StockEvaluator = (props) => {
           )}
           ESG Leaderboard
         </div>
-        <div className="col-span-12">WIP come back soon!</div>
+        <div className="col-span-12">
+          <ul>
+            {/* {props.leaders.map((data, idx)=> {
+              <li key={idx}>{data.name}, {data.score}</li>
+            })} */}
+            <li>{props.leaders[0].name}, {props.leaders[0].score}</li>
+            <li>{props.leaders[1].name}, {props.leaders[1].score}</li>
+            <li>{props.leaders[2].name}, {props.leaders[2].score}</li>
+
+          </ul>
+        </div>
       </div>
       {/* <div className="font-semibold mt-5">Leaderboard</div>
       <div
@@ -203,3 +213,4 @@ export const StockEvaluator = (props) => {
     </div>
   );
 };
+

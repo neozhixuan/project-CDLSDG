@@ -20,7 +20,7 @@ export const Accordion = (props) => {
         className="flex flex-row justify-between py-4 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between"
         onClick={toggleAccordion}
       >
-        <p className="inline-block text-footnote light font-semibold text-lg">{props.header}</p>
+        <p className="inline-block text-footnote light font-semibold text-base sm:text-lg">{props.header}</p>
         <span className='pr-4'>&darr;</span>
       </button>
       <div
@@ -28,7 +28,7 @@ export const Accordion = (props) => {
         style={{ maxHeight: `${height}` }}
         className="overflow-auto transition-max-height duration-700 ease-in-out"
       >
-        <div className="pb-10">{props.content}</div>
+        <div className="text-xs pb-10">{props.content}</div>
       </div>
     </div>
   )

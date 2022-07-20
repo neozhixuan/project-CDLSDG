@@ -24,7 +24,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  Bar,
 } from "chart.js";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -34,32 +36,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-const chartData = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "Portfolio Value",
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: "rgba(75,192,192,0.4)",
-      borderColor: "rgba(75,192,192,1)",
-      borderCapStyle: "butt",
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: "miter",
-      pointBorderColor: "rgba(75,192,192,1)",
-      pointBackgroundColor: "#fff",
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-      pointHoverBorderColor: "rgba(220,220,220,1)",
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [65, 59, 80, 81, 56, 55, 40],
-    },
-  ],
-};
+
 const height = 35;
 
 class MenuList extends Component {
@@ -80,7 +57,8 @@ class MenuList extends Component {
     );
   }
 }
-export default function IndexPage({ datapoint, options }) {
+export default function IndexPage({ datapoint, options, leaders }) {
+  console.log(leaders[0].score)
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
 
@@ -95,6 +73,58 @@ export default function IndexPage({ datapoint, options }) {
   const [e, setE] = useState(0);
   const [s, setS] = useState(0);
   const [g, setG] = useState(0);
+  const [last, setLast] = useState(0);
+  const [prevLast, setPrevLast] = useState(0);
+
+  const chartData = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+      {
+        label: "Portfolio Value",
+        yAxisID: "A",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: "butt",
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: "miter",
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [0, 0, 0, 0, 0, prevLast, last],
+      },
+      {
+        label: "ESG Value",
+        yAxisID: "B",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "#000000",
+        borderColor: "#00000",
+        borderCapStyle: "butt",
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: "miter",
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "#000000",
+        pointHoverBorderColor: "#000000",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [0, 0, 0, 0, 0, 0, score],
+      },
+    ],
+  };
 
   const isDesktopMode = useMediaQuery({
     query: "(min-width: 1024px)",
@@ -104,7 +134,15 @@ export default function IndexPage({ datapoint, options }) {
     query: "(min-width: 768px)",
   });
 
-  var gatherStats = () => {
+  var record = async (array) => {
+    const data = await fetch(
+      `http://localhost:3000/api/users?name=${array[1]}&score=${array[0]}`
+    );
+    const res = await data.json();
+    console.log(res);
+  };
+
+  var gatherStats = (name) => {
     // Hold average ESG score
     let count = 0;
     let total = 0;
@@ -112,6 +150,8 @@ export default function IndexPage({ datapoint, options }) {
     let totalS = 0;
     let totalG = 0;
     let average = 0;
+    let totalLast = 0;
+    let change = 0.0;
     // // Prevents stocks from piling up when code changes in local
     // if (allItems.length !== select.length) {
     // "allItems" will be the state that holds all the stocks and info
@@ -131,8 +171,11 @@ export default function IndexPage({ datapoint, options }) {
           totalE += datapoint[j].E;
           totalS += datapoint[j].S;
           totalG += datapoint[j].G;
-          console.log("total is " + total);
+          totalLast += parseFloat(datapoint[j].Last);
+          change += parseFloat(datapoint[j].Change);
+          console.log(change);
           count++;
+          // Set ESG Scores, Portfolio Value, Write to Mongo
           if (count === select.length) {
             average = total / count;
             setScore(average);
@@ -140,41 +183,47 @@ export default function IndexPage({ datapoint, options }) {
             setE(totalE / count);
             setS(totalS / count);
             setG(totalG / count);
+            setLast(totalLast);
+            setPrevLast((totalLast -= change));
+            let array = [average, name]
+            record(array);
           }
         }
       }
     }
+    // Set Item Bank
     setAllItems(allItems);
     console.log(allItems);
 
+    // Sectors
     for (const sector in sectors) {
       sectors[sector] = (sectors[sector] / allItems.length) * 100;
     }
-
     const sortedSectors = Object.fromEntries(
       Object.entries(sectors).sort(([, a], [, b]) => b - a)
     );
     setSectors(sortedSectors);
-    // } else {
-    //   console.log("Close");
-    // }
-  };
 
+  };
+  const isMobileMode = useMediaQuery({
+    query: "(min-width: 640px)",
+  });
   const onSubmitHandler = (event) => {
     event.preventDefault();
     if (select.length !== 0) {
       setName(event.target.elements[0].value);
       willSetPage(1);
     }
-    gatherStats();
+    setName("NIL")
+    gatherStats(event.target.elements[0].value);
   };
 
   const jasonStart = () => {
     select.push("SSTK", "AAPL", "TSLA", "AMZN");
     setSelect([...select]);
     willSetPage(1);
-    gatherStats();
-    setName("Jason")
+    setName("Jason");
+    gatherStats("Jason");
   };
 
   // const addSelect = () => {
@@ -221,10 +270,9 @@ export default function IndexPage({ datapoint, options }) {
         <title>ESG DaSH</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="shortcut icon" href="/favicon.ico" />
-
       </Head>
       <div className={`flex w-full p-4 bg-gray-100 sm:p-0 `}>
-        <Sidebar page={page} />
+        <Sidebar page={page} backAction={() => resetPage} />
 
         {page === 0 && (
           <Container>
@@ -257,25 +305,25 @@ export default function IndexPage({ datapoint, options }) {
                   /> */}
                 </div>
 
-                {items.map((data, idx) => (
-                  <p className="flex flex-row space-x-2 w-full" key={idx}>
-                    {/* <span>{data}</span> */}
-                    <Select
-                      filterOption={createFilter({ ignoreAccents: false })}
-                      components={{ MenuList }}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
-                      options={options}
-                      isMulti
-                      onChange={handleTypeSelect}
-                    />
-                    {/* <input
+                {/* {items.map((data, idx) => ( */}
+                {/* <p className="flex flex-row space-x-2 w-full" key={idx}> */}
+                {/* <span>{data}</span> */}
+                <Select
+                  filterOption={createFilter({ ignoreAccents: false })}
+                  components={{ MenuList }}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full form-multiselect"
+                  options={options}
+                  isMulti
+                  onChange={handleTypeSelect}
+                />
+                {/* <input
                       type="button"
                       className="w-10 border border-gray-300"
                       value="+"
                       onClick={addSelect}
                     /> */}
-                  </p>
-                ))}
+                {/* </p> */}
+                {/* ))} */}
               </div>
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center"
@@ -322,23 +370,44 @@ export default function IndexPage({ datapoint, options }) {
         {page === 1 && (
           <div className="flex flex-col w-full space-y-10  bg-gray-100">
             <div className="bg-gray-100 w-full pl-4 pt-4">
-              <header className="h-80 w-auto pb-80 mr-2 mb-7 sm:mb-36 md:mb-16 md:pb-24 lg:pb-10">
+              <header className="h-80 w-auto pb-80 mr-2 mb-5 sm:mb-36 md:mb-16 md:pb-24 lg:pb-10">
                 <h1 className="font-semibold text-lg">
-                  {name ? (
+                  {name !== "NIL" ? (
                     <span>Welcome back, {name}</span>
                   ) : (
                     <span>Overview</span>
                   )}
                 </h1>
-                <div className="flex flex-col lg:flex-row lg:space-y-0 space-y-4 w-full mt-4 mb-3">
-                  <BannerButton text={'View a recap of your year of ESG with CGS-CIMB'} button={'View recap'}/>
-                  <BannerButton text={'Take a pledge towards improving your ESG score'} button={'View pledge'}/>
+                <div className="flex flex-col lg:flex-row lg:space-y-0 space-y-4 w-full mt-4 mb-6 sm:mb-2">
+                  <BannerButton
+                    text={"View a recap of your year of ESG with CGS-CIMB"}
+                    button={"View recap"}
+                  />
+                  <BannerButton
+                    text={"Take a pledge towards improving your ESG score"}
+                    button={"View pledge"}
+                  />
                 </div>
                 <Line
+                  className={`pb-6 sm:pb-0 ${isMobileMode && "pt-6"}`}
                   data={chartData}
                   options={{
                     responsive: true,
                     maintainAspectRatio: false,
+                    scales: {
+                      A: {
+                        type: "linear",
+                        position: "left",
+                      },
+                      B: {
+                        type: "linear",
+                        position: "right",
+                        ticks: {
+                          max: 1,
+                          min: 0,
+                        },
+                      },
+                    },
                   }}
                 />
               </header>
@@ -353,7 +422,7 @@ export default function IndexPage({ datapoint, options }) {
               />
               <StockScore
                 setPage={() => willSetPage(2)}
-                className="h-80 col-span-4 md:col-span-4 p-10 "
+                className="h-80 col-span-4 md:col-span-4 p-4 sm:p-10 "
                 score={score}
               />
             </div>
@@ -371,6 +440,7 @@ export default function IndexPage({ datapoint, options }) {
               soc={s}
               gov={g}
               sectors={sectors}
+              leaders={leaders}
             />
           </>
         )}
@@ -402,7 +472,15 @@ export async function getServerSideProps(context) {
       label: property.Stock_Name,
     };
   });
+
+  const leaderboard = await db
+    .collection("users")
+    .find().sort({score: -1})
+    .toArray();
+  const leaders = JSON.parse(JSON.stringify(leaderboard));
+
+
   return {
-    props: { datapoint: properties, options: options },
+    props: { datapoint: properties, options: options, leaders: leaders },
   };
 }

@@ -2,7 +2,7 @@ import { StockCard } from "./StockCard";
 import { StockBanner } from "./StockBanner";
 
 export const StockLayout = (props) => {
-  const classes = "bg-gray-100 px-5 " + props.className;
+  const classes = "bg-gray-100 px-4 " + props.className;
 
   return (
     <div className={classes}>

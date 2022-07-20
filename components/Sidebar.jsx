@@ -7,7 +7,6 @@ export const Sidebar = (props) => {
         <ul className="space-y-2">
           <li>
             <a
-              href="#"
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <svg
@@ -122,8 +121,8 @@ export const Sidebar = (props) => {
             </a>
           </li> */}
           <li>
-            <a
-              href="#"
+            <button
+              onClick={props.backAction()}
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <svg
@@ -138,8 +137,8 @@ export const Sidebar = (props) => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <span className="flex-1 ml-3 whitespace-nowrap">Sign Up</span>
-            </a>
+              <span className="flex-1 ml-3 whitespace-nowrap">Back to Start</span>
+            </button>
           </li>
         </ul>
       </div>
