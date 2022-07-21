@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import Head from "next/head";
 import { Sidebar } from "../components/Sidebar";
 import { StockLayout } from "../components/Page1/StockLayout";
 import { BannerButton } from "../components/Page1/BannerButton";
 import { StockEvaluator } from "../components/Page2/StockEvaluator";
 import { StockScore } from "../components/StockScore";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Container } from "../components/Container";
-import { Numbering } from "../components/Page2/Numbering";
 import { useMediaQuery } from "react-responsive";
 import { connectToDatabase } from "../util/mongodb";
 import Select from "react-select";
@@ -24,8 +23,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  Bar,
 } from "chart.js";
+import { useRouter } from "next/router";
 
 ChartJS.register(
   CategoryScale,
@@ -58,7 +57,7 @@ class MenuList extends Component {
   }
 }
 export default function IndexPage({ datapoint, options, leaders }) {
-  console.log(leaders[0].score)
+  console.log(leaders[0].score);
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
 
@@ -75,6 +74,7 @@ export default function IndexPage({ datapoint, options, leaders }) {
   const [g, setG] = useState(0);
   const [last, setLast] = useState(0);
   const [prevLast, setPrevLast] = useState(0);
+  const [position, setPosition] = useState(0);
 
   const chartData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -185,7 +185,7 @@ export default function IndexPage({ datapoint, options, leaders }) {
             setG(totalG / count);
             setLast(totalLast);
             setPrevLast((totalLast -= change));
-            let array = [average, name]
+            let array = [average, name];
             record(array);
           }
         }
@@ -204,7 +204,18 @@ export default function IndexPage({ datapoint, options, leaders }) {
     );
     setSectors(sortedSectors);
 
+    console.log("myscore is" + average)
+    for (let i = 0; i < leaders.length; i++){
+      if(average > leaders[i].score){
+        console.log("posiiton is "+ i)
+        setPosition(i+1)
+        console.log(position)
+        break;
+      }
+    }
+
   };
+
   const isMobileMode = useMediaQuery({
     query: "(min-width: 640px)",
   });
@@ -214,8 +225,9 @@ export default function IndexPage({ datapoint, options, leaders }) {
       setName(event.target.elements[0].value);
       willSetPage(1);
     }
-    setName("NIL")
+    setName("NIL");
     gatherStats(event.target.elements[0].value);
+    refreshData();
   };
 
   const jasonStart = () => {
@@ -224,6 +236,7 @@ export default function IndexPage({ datapoint, options, leaders }) {
     willSetPage(1);
     setName("Jason");
     gatherStats("Jason");
+    refreshData();
   };
 
   // const addSelect = () => {
@@ -260,6 +273,15 @@ export default function IndexPage({ datapoint, options, leaders }) {
     array = [];
   };
 
+  const router = useRouter();
+
+  // Refreshes getServerSideProps by redirecting the URL to itself
+  // https://www.joshwcomeau.com/nextjs/refreshing-server-side-props/
+  // Btw i still dont know the difference btw this and getstaticprops
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
+
   return (
     <main>
       <Head>
@@ -272,7 +294,7 @@ export default function IndexPage({ datapoint, options, leaders }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <div className={`flex w-full p-4 bg-gray-100 sm:p-0 `}>
-        <Sidebar page={page} backAction={() => resetPage} />
+        <Sidebar items={allItems} page={page} backAction={() => resetPage} />
 
         {page === 0 && (
           <Container>
@@ -441,6 +463,7 @@ export default function IndexPage({ datapoint, options, leaders }) {
               gov={g}
               sectors={sectors}
               leaders={leaders}
+              position={position}
             />
           </>
         )}
@@ -466,19 +489,19 @@ export async function getServerSideProps(context) {
     return compareStrings(a.Stock_Name, b.Stock_Name);
   });
 
+  const leaderboard = await db
+    .collection("users")
+    .find()
+    .sort({ score: -1 })
+    .toArray();
+  const leaders = JSON.parse(JSON.stringify(leaderboard));
+
   const options = properties.map((property) => {
     return {
       value: property.Code,
       label: property.Stock_Name,
     };
   });
-
-  const leaderboard = await db
-    .collection("users")
-    .find().sort({score: -1})
-    .toArray();
-  const leaders = JSON.parse(JSON.stringify(leaderboard));
-
 
   return {
     props: { datapoint: properties, options: options, leaders: leaders },

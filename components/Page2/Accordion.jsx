@@ -28,7 +28,7 @@ export const Accordion = (props) => {
         style={{ maxHeight: `${height}` }}
         className="overflow-auto transition-max-height duration-700 ease-in-out"
       >
-        <div className="text-xs pb-10">{props.content}</div>
+        <div className="text-xs sm:text-base pb-10 pr-4">{props.content}</div>
       </div>
     </div>
   )

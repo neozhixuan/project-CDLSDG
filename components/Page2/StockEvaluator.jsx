@@ -4,6 +4,8 @@ import { StockAnalysisCard } from "./StockAnalysisCard";
 import { Accordion } from "./Accordion";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { Leaderboard } from "./Leaderboard";
+import Image from 'next/image'
 
 export const StockEvaluator = (props) => {
   const [index, setIndex] = useState(0);
@@ -23,6 +25,8 @@ export const StockEvaluator = (props) => {
     }
   };
 
+
+
   const classes =
     " lg:pl-2 w-full flex-col bg-gray-100 grid grid-cols-12 lg:space-x-4 " +
     props.className;
@@ -32,7 +36,7 @@ export const StockEvaluator = (props) => {
         Overview
       </span>
       {/* Part 1 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-1 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-3 rounded-full text-2xl lg:text-4xl col-span-1">
         1
       </div>
       <div className="col-span-12 sm:col-span-11">
@@ -90,7 +94,7 @@ export const StockEvaluator = (props) => {
       </div>
 
       {/* Part 2 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
         2
       </div>
       <div className="col-span-12 sm:col-span-11">
@@ -138,7 +142,7 @@ export const StockEvaluator = (props) => {
       </div>
 
       {/* Part 3 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
         3
       </div>
       <div className="col-span-12 sm:col-span-11">
@@ -170,11 +174,11 @@ export const StockEvaluator = (props) => {
         </ul>
       </div>
       {/* Part 4 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-10 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
         4
       </div>
       <div className="col-span-12 sm:col-span-11">
-        <div className="font-bold text-xl mt-10">
+        <div className="font-bold text-xl mt-10 mb-2">
           {!isMobileMode ? (
             <span className="bg-blue-200 px-2 rounded-xl mr-2 text-lg">4</span>
           ) : (
@@ -183,15 +187,20 @@ export const StockEvaluator = (props) => {
           ESG Leaderboard
         </div>
         <div className="col-span-12">
-          <ul>
-            {/* {props.leaders.map((data, idx)=> {
-              <li key={idx}>{data.name}, {data.score}</li>
-            })} */}
-            <li>{props.leaders[0].name}, {props.leaders[0].score}</li>
-            <li>{props.leaders[1].name}, {props.leaders[1].score}</li>
-            <li>{props.leaders[2].name}, {props.leaders[2].score}</li>
+          <div className="rounded-md bg-white gap-y-4 grid grid-cols-12 grid-rows-5 md:grid-rows-3 items-center p-4 hover:shadow px-20">
+              {/* <span className="col-span-3 font-semibold">Name</span>
+              <span className="col-span-3 font-semibold">Score</span> */}
+              <span className="row-start-1 md:row-start-1 col-span-9 md:col-span-3 flex items-center"><Image width={50} height={50} src="/avatar.png"/><span className="ml-3">{props.leaders[0].name}</span></span>
+              <span className="row-start-1 md:row-start-1 col-span-3 md:col-span-3 font-bold">{props.leaders[0].score}</span>
+              <span className="row-start-4 md:row-start-1 flex md:justify-center col-span-9 md:col-span-6">Your score:</span>
+              <span className="row-start-2 md:row-start-2 col-span-9 md:col-span-3 flex items-center"><Image width={50} height={50} src="/avatar.png"/><span className="ml-3">{props.leaders[1].name}</span></span>
+              <span className="row-start-2 md:row-start-2 col-span-3 md:col-span-3 font-semibold">{props.leaders[1].score}</span>
+              <span className="row-start-4 md:row-start-2 flex md:justify-center col-span-3 md:col-span-6">{props.score}</span>
+              <span className="row-start-3 md:row-start-3 col-span-9 md:col-span-3 flex items-center"><Image width={50} height={50} src="/avatar.png"/><span className="ml-3">{props.leaders[2].name}</span></span>
+              <span className="row-start-3 md:row-start-3 col-span-3 md:col-span-3">{props.leaders[2].score}</span>
+              <span className="row-start-5 md:row-start-3 flex justify-center col-span-12 md:col-span-6">You are rank {props.position}/{props.leaders.length}</span>
 
-          </ul>
+          </div>
         </div>
       </div>
       {/* <div className="font-semibold mt-5">Leaderboard</div>
@@ -213,4 +222,3 @@ export const StockEvaluator = (props) => {
     </div>
   );
 };
-
