@@ -56,9 +56,8 @@ class MenuList extends Component {
     );
   }
 }
-export default function IndexPage({ datapoint, options, leaders, reports }) {
-  console.log("Reports is below")
-  console.log(leaders[0].score);
+export default function IndexPage({ datapoint, options, leaders, reports, recommendation }) {
+  console.log(recommendation);
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
 
@@ -196,7 +195,7 @@ export default function IndexPage({ datapoint, options, leaders, reports }) {
     setAllItems(allItems);
     console.log(allItems);
 
-    // Sectors
+    // Determine percentage of sectors in portfolio
     for (const sector in sectors) {
       sectors[sector] = (sectors[sector] / allItems.length) * 100;
     }
@@ -205,7 +204,7 @@ export default function IndexPage({ datapoint, options, leaders, reports }) {
     );
     setSectors(sortedSectors);
 
-    console.log("myscore is" + average);
+    // Calculate position in leaderboard
     for (let i = 0; i < leaders.length; i++) {
       if (average > leaders[i].score) {
         console.log("posiiton is " + i);
@@ -214,11 +213,14 @@ export default function IndexPage({ datapoint, options, leaders, reports }) {
         break;
       }
     }
+
+    
   };
 
   const isMobileMode = useMediaQuery({
     query: "(min-width: 640px)",
   });
+  
   const onSubmitHandler = (event) => {
     event.preventDefault();
     if (select.length !== 0) {
@@ -299,8 +301,8 @@ export default function IndexPage({ datapoint, options, leaders, reports }) {
         {page === 0 && (
           <Container>
             <div className="mb-12 ">
-              <Image className="" width={300} height={75} src="/cgscimb.png" />
-              <Image className="" width={280} height={75} src="/esg-dash.png" />
+              <Image className="mix-blend-multiply" width={300} height={75} src="/cgscimb.png" />
+              <Image className="mix-blend-multiply" width={280} height={75} src="/esg-dash.png" />
             </div>
 
             <p className="font-semibold mb-2 text-lg">
@@ -387,7 +389,7 @@ export default function IndexPage({ datapoint, options, leaders, reports }) {
             >
               Log in as Jason
             </button>
-            <a href={reports[0].Report} target="_blank" rel="noreferrer" className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center">Report</a>
+            {/* <a href={reports[0].Report} target="_blank" rel="noreferrer" className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center">Report</a> */}
           </Container>
         )}
         {page === 1 && (
@@ -485,6 +487,9 @@ export async function getServerSideProps(context) {
 
   const data = await db.collection("data").find({}).toArray();
 
+  const recommend = await db.collection("data").find({}).sort({ ESG: -1 }).limit(100).toArray();
+  const recommendation = JSON.parse(JSON.stringify(recommend));
+
   const property = JSON.parse(JSON.stringify(data));
   const properties = property.sort(function (a, b) {
     return compareStrings(a.Stock_Name, b.Stock_Name);
@@ -513,6 +518,7 @@ export async function getServerSideProps(context) {
       options: options,
       leaders: leaders,
       reports: reports,
+      recommendation: recommendation,
     },
   };
 }

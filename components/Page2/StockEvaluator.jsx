@@ -156,10 +156,12 @@ export const StockEvaluator = (props) => {
         </div>
         <SectorCard
           sectors={props.sectors}
-          className="mx-auto mt-3 "
+          className="mx-auto mt-3 mb-2 "
           a={"A Breakdown of Your Portfolio’s Holdings"}
         />
-        <ul className="flex flex-col bg-gray-100 mt-4">
+                  Possible companies to invest in:
+
+        <ul className="flex flex-col bg-gray-100 mt-2">
           <StockAnalysisCard
             suggestion={true}
             companyName={"MSFT"}

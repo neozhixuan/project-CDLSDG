@@ -16,9 +16,9 @@ export const StockAnalysisCard = (props) => {
           <CardStats name={"Last"} stat={"$" + props.last} />
           <div className="sm:block hidden col-span-1"></div>
           <div className="col-span-3 sm:col-span-2">
-          <button disabled
-              className="mt-2 w-full bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded flex justify-center"
-            >View CGS-CIMB&apos;s report</button>
+          <a  target="_blank" rel="noreferrer" href="/MSFT.pdf" 
+              className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center"
+            >View CGS-CIMB&apos;s report</a>
           </div>
         </div>
       ) : (
