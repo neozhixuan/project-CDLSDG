@@ -56,7 +56,8 @@ class MenuList extends Component {
     );
   }
 }
-export default function IndexPage({ datapoint, options, leaders }) {
+export default function IndexPage({ datapoint, options, leaders, reports }) {
+  console.log("Reports is below")
   console.log(leaders[0].score);
   const [page, willSetPage] = useState(0);
   const [name, setName] = useState("");
@@ -204,16 +205,15 @@ export default function IndexPage({ datapoint, options, leaders }) {
     );
     setSectors(sortedSectors);
 
-    console.log("myscore is" + average)
-    for (let i = 0; i < leaders.length; i++){
-      if(average > leaders[i].score){
-        console.log("posiiton is "+ i)
-        setPosition(i+1)
-        console.log(position)
+    console.log("myscore is" + average);
+    for (let i = 0; i < leaders.length; i++) {
+      if (average > leaders[i].score) {
+        console.log("posiiton is " + i);
+        setPosition(i + 1);
+        console.log(position);
         break;
       }
     }
-
   };
 
   const isMobileMode = useMediaQuery({
@@ -387,6 +387,7 @@ export default function IndexPage({ datapoint, options, leaders }) {
             >
               Log in as Jason
             </button>
+            <a href={reports[0].Report} target="_blank" className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center">Report</a>
           </Container>
         )}
         {page === 1 && (
@@ -496,6 +497,9 @@ export async function getServerSideProps(context) {
     .toArray();
   const leaders = JSON.parse(JSON.stringify(leaderboard));
 
+  const report = await db.collection("reports").find({}).toArray();
+  const reports = JSON.parse(JSON.stringify(report));
+
   const options = properties.map((property) => {
     return {
       value: property.Code,
@@ -504,6 +508,11 @@ export async function getServerSideProps(context) {
   });
 
   return {
-    props: { datapoint: properties, options: options, leaders: leaders },
+    props: {
+      datapoint: properties,
+      options: options,
+      leaders: leaders,
+      reports: reports,
+    },
   };
 }

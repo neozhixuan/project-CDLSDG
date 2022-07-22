@@ -28,7 +28,7 @@ export const StockEvaluator = (props) => {
 
 
   const classes =
-    " lg:pl-2 w-full flex-col bg-gray-100 grid grid-cols-12 lg:space-x-4 " +
+    " lg:pl-2 lg:pr-4 w-full flex-col bg-gray-100 grid grid-cols-12 sm:space-x-2 lg:space-x-4  " +
     props.className;
   return (
     <div className={classes}>
@@ -36,7 +36,7 @@ export const StockEvaluator = (props) => {
         Overview
       </span>
       {/* Part 1 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-3 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="font-bold hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-3 rounded-full text-2xl lg:text-4xl col-span-1">
         1
       </div>
       <div className="col-span-12 sm:col-span-11">
@@ -94,7 +94,7 @@ export const StockEvaluator = (props) => {
       </div>
 
       {/* Part 2 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="font-bold hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
         2
       </div>
       <div className="col-span-12 sm:col-span-11">
@@ -142,7 +142,7 @@ export const StockEvaluator = (props) => {
       </div>
 
       {/* Part 3 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="font-bold hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
         3
       </div>
       <div className="col-span-12 sm:col-span-11">
@@ -174,7 +174,7 @@ export const StockEvaluator = (props) => {
         </ul>
       </div>
       {/* Part 4 */}
-      <div className="hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-32 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
+      <div className="font-bold hidden sm:flex justify-center items-center bg-blue-200 h-8 md:h-16 lg:h-24 mt-12 rounded-full text-2xl lg:text-4xl col-span-1">
         4
       </div>
       <div className="col-span-12 sm:col-span-11">
