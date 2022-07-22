@@ -387,7 +387,7 @@ export default function IndexPage({ datapoint, options, leaders, reports }) {
             >
               Log in as Jason
             </button>
-            <a href={reports[0].Report} target="_blank" className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center">Report</a>
+            <a href={reports[0].Report} target="_blank" rel="noreferrer" className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex justify-center">Report</a>
           </Container>
         )}
         {page === 1 && (
