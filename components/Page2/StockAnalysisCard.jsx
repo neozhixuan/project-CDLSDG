@@ -42,9 +42,9 @@ export const StockAnalysisCard = (props) => {
           </div>
         </div>
         <Score className="row-start-1" name={"CDP Score"} score={"NIL"} />
-        <Score className="row-start-2 sm:row-start-1" name={"Environmental"} score={props.e} />
+        <Score className="row-start-2 sm:row-start-1" name={"Environment"} score={props.e} />
         <Score className="row-start-2 sm:row-start-1" name={"Social"} score={props.s} />
-        <Score className="row-start-2 sm:row-start-1" name={"Governmental"} score={props.g} />
+        <Score className="row-start-2 sm:row-start-1" name={"Governance"} score={props.g} />
       </div>
     </li>
   );

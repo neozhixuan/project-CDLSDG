@@ -133,7 +133,7 @@ export const StockEvaluator = (props) => {
             }
           />
           <Accordion
-            header={"Governmental"}
+            header={"Governance"}
             content={
               "Studies reveal that governance quality positively affects financial markets in developed countries. The stock markets that operate under efficient governance and institutional environments experience greater stock returns and lower level of risk. This might lead to an argument that such risk and returns relationships cannot sustain an equilibrium, as risk-averse investors will not invest in countries that are not mean variance efficient. Nevertheless, this argument disregards international market segmentation and the benefits of stock diversification that arise from countries with poor governance. This is similar to the situation that risk-averse investors carry certain stocks with higher risk and lower returns to attain diversification benefits."
             }

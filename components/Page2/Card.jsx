@@ -22,9 +22,9 @@ export const Card = (props) => {
         </span>
       </div>
       <Score className="row-start-1" name={"CDP Score"} score={"NIL"} />
-      <Score className="row-start-2 sm:row-start-1" name={"Environmental"} score={props.d} />
+      <Score className="row-start-2 sm:row-start-1" name={"Environment"} score={props.d} />
       <Score className="row-start-2 sm:row-start-1" name={"Social"} score={props.e} />
-      <Score className="row-start-2 sm:row-start-1" name={"Governmental"} score={props.f} />
+      <Score className="row-start-2 sm:row-start-1" name={"Governance"} score={props.f} />
     </div>
   );
 };
