@@ -2,7 +2,7 @@ export const ESGScore = (props) => (
     <div className={props.className}>
     <div className="text-gray-400 font-semibold">ESG Score</div>
     <span className={`font-semibold w-10 rounded-lg text-white ${
-        props.c > 60
+        props.esg > 60
           ? "bg-green-500 "
           : props.esg < 30
           ? "bg-red-500 "
