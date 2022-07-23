@@ -51,7 +51,7 @@ export const StockEvaluator = (props) => {
         <Card
           className="mx-auto text-center mt-2 "
           a={"A breakdown of your average sustainability scores"}
-          b={props.score > 60 ? "GOOD" : props.score < 30 ? "POOR" : "NORMAL"}
+          b={props.score > 75 ? "GOOD" : props.score < 30 ? "POOR" : "NORMAL"}
           c={props.score}
           d={props.env}
           e={props.soc}

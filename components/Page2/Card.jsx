@@ -11,7 +11,7 @@ export const Card = (props) => {
       <div className="row-start-1 col-span-1 text-center flex justify-center">
         <span
           className={`${
-            props.c > 60
+            props.esg > 75
               ? "bg-green-500 "
               : props.esg < 30
               ? "bg-red-500 "

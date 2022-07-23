@@ -6,8 +6,8 @@ export const StockScore = (props) => {
         <p className="pt-5 text-center text-gray-500"> Your Average ESG Score </p>
         <p className="text-center text-3xl font-bold py-2"> {Math.trunc(props.score)} </p>
         <div className="mx-auto">
-            <div className={`${props.score > 60 ? "bg-green-500 " : props.score < 30 ? "bg-red-500 " : "bg-yellow-500 "} text-center text-sm text-white rounded-xl p-2`}>
-                {props.score > 60 ? "GOOD" : props.score < 30 ? "POOR" : "NORMAL"}
+            <div className={`${props.score > 75 ? "bg-green-500 " : props.score < 30 ? "bg-red-500 " : "bg-yellow-500 "} text-center text-sm text-white rounded-xl p-2`}>
+                {props.score > 75 ? "GOOD" : props.score < 30 ? "POOR" : "NORMAL"}
             </div>
         </div>
         <p className="text-center text-gray-500 py-2">A higher ESG score leads<br/>to better long term yield.</p>

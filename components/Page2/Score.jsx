@@ -10,7 +10,7 @@ export const Score = (props) => {
         ) : props.score ? (
           <span
             className={`${
-              props.score > 60
+              props.score > 75
                 ? "text-green-500 "
                 : props.score < 30
                 ? "text-red-500 "

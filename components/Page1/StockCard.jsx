@@ -13,7 +13,7 @@ export const StockCard = (props) => {
           {props.stockChangePercent}
         </div>
         <div className={`basis-1/5 text-center text-white`}>
-          <span className={`${props.esg > 60 ? "bg-green-500 " : props.esg < 30 ? "bg-red-500 " : "bg-yellow-500 "} px-3 rounded-lg`}>{Math.trunc(props.esg)}</span>
+          <span className={`${props.esg > 75 ? "bg-green-500 " : props.esg < 30 ? "bg-red-500 " : "bg-yellow-500 "} px-3 rounded-lg`}>{Math.trunc(props.esg)}</span>
         </div>
       </div>
     </li>
